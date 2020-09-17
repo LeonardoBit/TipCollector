@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Tip Collector</string>
+    <string name="analysis">Analysis</string>
+    <string name="timeline">Timeline</string>
+    <string name="main_page">Main page</string>
+    <string name="sort">Sort</string>
+    <string name="old_first">Old first</string>
+    <string name="new_first">New first</string>
+    <string name="communicate">Communicate</string>
+    <string name="share">Share</string>
+    <string name="settings">Settings</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+</resources>

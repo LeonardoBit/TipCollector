@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_mainPage"
+            android:icon="@drawable/ic_home_page"
+            android:title="@string/main_page" />
+        <item
+            android:id="@+id/nav_timeline"
+            android:icon="@drawable/ic_home_page"
+            android:title="@string/timeline" />
+        <item
+            android:id="@+id/nav_analysis"
+            android:icon="@drawable/ic_home_page"
+            android:title="@string/analysis" />
+    </group>
+
+    <item android:title="@string/communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_share"
+                android:title="@string/share" />
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings"
+                android:title="@string/settings" />
+        </menu>
+    </item>
+
+</menu>
+
+
