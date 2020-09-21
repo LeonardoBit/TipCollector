@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,7 @@ public class TimelineFragment extends Fragment {
     ListView daysList;
     ArrayAdapter daysArrayAdapter;
     DataBaseHelper db;
+    TextView timeLineCash,timeLineCard;
 
 
 
@@ -50,10 +52,15 @@ public class TimelineFragment extends Fragment {
 
 
         daysList = v.findViewById(R.id.daysList);
+        timeLineCash = v.findViewById(R.id.timeLineCash);
+        timeLineCard = v.findViewById(R.id.timeLineCard);
+
 
         db = new DataBaseHelper(getActivity());
         daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.getAll());
         daysList.setAdapter(daysArrayAdapter);
+        timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
+        timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
 
 
         daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -77,6 +84,7 @@ public class TimelineFragment extends Fragment {
 
                                 db.deleteOne(clickedDay);
                                 daysArrayAdapter.notifyDataSetChanged();
+
                             }
 
                         });
@@ -109,13 +117,147 @@ public class TimelineFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.week_view:
-            showCurrentWeekDays(db);
+                 showCurrentWeekDays(db);
+
+
+
+
+
+
+                daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("")
+                                .setMessage("Are you sure you want to remove this day?")
+                                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+
+                                    }
+                                })
+                                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        DayModel clickedDay = (DayModel)parent.getItemAtPosition(position);
+                                        daysArrayAdapter.remove(clickedDay);
+
+                                        db.deleteOne(clickedDay);
+                                        daysArrayAdapter.notifyDataSetChanged();
+                                        timeLineCash.setText(String.valueOf(db.sumOfAllWeekCash()));
+                                        timeLineCard.setText(String.valueOf(db.sumOfAllWeekCard()));
+
+                                    }
+
+                                });
+
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                        return true;
+
+                    }
+                });
+
+
+
+
+                    timeLineCash.setText(String.valueOf(db.sumOfAllWeekCash()));
+                    timeLineCard.setText(String.valueOf(db.sumOfAllWeekCard()));
                 return true;
             case R.id.month_view:
-            showCurrentMonthDays(db);
+                  showCurrentMonthDays(db);
+
+
+                daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("")
+                                .setMessage("Are you sure you want to remove this day?")
+                                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+
+                                    }
+                                })
+                                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        DayModel clickedDay = (DayModel)parent.getItemAtPosition(position);
+                                        daysArrayAdapter.remove(clickedDay);
+
+                                        db.deleteOne(clickedDay);
+                                        daysArrayAdapter.notifyDataSetChanged();
+                                        timeLineCash.setText(String.valueOf(db.sumOfAllMonthCash()));
+                                        timeLineCard.setText(String.valueOf(db.sumOfAllMonthCard()));
+
+                                    }
+
+                                });
+
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                        return true;
+
+                    }
+                });
+
+
+
+
+
+
+
+
+
+                    timeLineCash.setText(String.valueOf(db.sumOfAllMonthCash()));
+                    timeLineCard.setText(String.valueOf(db.sumOfAllMonthCard()));
                 return true;
             case R.id.all_view:
-                showAllDays(db);
+                 showAllDays(db);
+
+                daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("")
+                                .setMessage("Are you sure you want to remove this day?")
+                                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+
+                                    }
+                                })
+                                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        DayModel clickedDay = (DayModel)parent.getItemAtPosition(position);
+                                        daysArrayAdapter.remove(clickedDay);
+
+                                        db.deleteOne(clickedDay);
+                                        daysArrayAdapter.notifyDataSetChanged();
+                                        timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
+                                        timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
+
+                                    }
+
+                                });
+
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                        return true;
+
+                    }
+                });
+
+
+
+
+                    timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
+                    timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
                 return true;
             default:
                 break;
@@ -128,6 +270,7 @@ public class TimelineFragment extends Fragment {
     private void showAllDays(DataBaseHelper dataBaseHelper2 ){
         daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.getAll());
         daysList.setAdapter(daysArrayAdapter);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

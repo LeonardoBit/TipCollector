@@ -28,8 +28,7 @@ public class DayModel {
     public String toString() {
         return dayDate  +"    "+
                 " cash=" + cash +"    "+
-                " card=" + card +"    "+
-                " sum=" + sum ;
+                " card=" + card ;
     }
 
     public int getWeekOfYear() {

@@ -14,7 +14,7 @@ import androidx.annotation.RequiresApi;
 import java.sql.Date;
 
 import java.time.LocalDate;
-import java.time.Month;
+
 import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 
@@ -117,7 +117,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int tipCash = cursor.getInt(3);
                 int tipCard = cursor.getInt(4);
                 int tipSum = cursor.getInt(5);
-
 
 
 
@@ -232,5 +231,131 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return returnList;
     }
 
+    public int sumOfAllCash() {
 
+        int sumOfAllCash = 0;
+
+        String queryString = "SELECT SUM( TIP_CASH ) AS totalCash " + "  FROM DAYS_TABLE";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst())
+            sumOfAllCash = cursor.getInt(cursor.getColumnIndex("totalCash"));
+
+
+        return sumOfAllCash;
+    }
+    public int sumOfAllCard() {
+
+        int sumOfAllCard = 0;
+
+        String queryString = "SELECT SUM( TIP_CARD ) AS totalCard " + "  FROM DAYS_TABLE";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst())
+            sumOfAllCard = cursor.getInt(cursor.getColumnIndex("totalCard"));
+
+
+        return sumOfAllCard;
+
+
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int sumOfAllWeekCash(){
+        int sumOfAllCash=0;
+
+        LocalDate ld = LocalDate.now();
+        int weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) ;
+
+        String queryString = " SELECT SUM( TIP_CASH ) AS totalCash FROM " + DAYS_TABLE + " WHERE "+ COLUMN_WEEK+  "=" +  weekNumber ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+        if (cursor.moveToFirst())
+            sumOfAllCash = cursor.getInt(cursor.getColumnIndex("totalCash"));
+
+
+        return sumOfAllCash;
+
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int sumOfAllWeekCard(){
+        int sumOfAllWeekCard=0;
+
+        LocalDate ld = LocalDate.now();
+        int weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) ;
+
+        String queryString = "SELECT SUM( TIP_CARD ) AS totalCard FROM " + DAYS_TABLE + " WHERE "+ COLUMN_WEEK+  "=" +  weekNumber ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+        if (cursor.moveToFirst())
+            sumOfAllWeekCard = cursor.getInt(cursor.getColumnIndex("totalCard"));
+
+
+        return sumOfAllWeekCard;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int sumOfAllMonthCash(){
+        int sumOfAllMonthCash = 0 ;
+        LocalDate ld = LocalDate.now();
+
+        int yearNumber = ld.getYear();
+        int monthNumber = ld.getMonth().getValue();
+
+        String queryString = "SELECT SUM( TIP_CASH ) AS totalCash, " +
+                "strftime('%m', DAY_DATE) as Month, " +
+                "strftime('%Y', DAY_DATE) as Year   " +
+                " FROM " + DAYS_TABLE +
+                " WHERE "+"(Month+0)" +
+                "=" + monthNumber +
+                " AND " + "(Year+0)"+
+                "=" + yearNumber +
+                " ORDER BY " + COLUMN_DAY_DATE +
+                " DESC " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+
+        if (cursor.moveToFirst())
+            sumOfAllMonthCash = cursor.getInt(cursor.getColumnIndex("totalCash"));
+
+
+
+        return sumOfAllMonthCash;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int sumOfAllMonthCard(){
+
+        int sumOfAllMonthCard = 0 ;
+        LocalDate ld = LocalDate.now();
+
+        int yearNumber = ld.getYear();
+        int monthNumber = ld.getMonth().getValue();
+
+        String queryString = "SELECT SUM( TIP_CARD ) AS totalCard, " +
+                "strftime('%m', DAY_DATE) as Month, " +
+                "strftime('%Y', DAY_DATE) as Year   " +
+                " FROM " + DAYS_TABLE +
+                " WHERE "+"(Month+0)" +
+                "=" + monthNumber +
+                " AND " + "(Year+0)"+
+                "=" + yearNumber +
+                " ORDER BY " + COLUMN_DAY_DATE +
+                " DESC " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+
+        if (cursor.moveToFirst())
+            sumOfAllMonthCard = cursor.getInt(cursor.getColumnIndex("totalCard"));
+
+
+
+        return sumOfAllMonthCard;
+
+    }
 }
