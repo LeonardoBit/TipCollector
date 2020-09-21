@@ -8,35 +8,50 @@
 
 
     <TextView
+        android:id="@+id/curView"
+        android:layout_width="wrap_content"
+        android:layout_height="31dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="21dp"
+        android:gravity="center"
+        android:text="TextView" />
+
+    <TextView
         android:id="@+id/timeLineCash"
         android:layout_width="wrap_content"
         android:layout_height="34dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="65dp"
         android:background="@android:color/holo_blue_light"
-        android:text="SUM"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:text="SUM" />
 
     <TextView
         android:id="@+id/timeLineCard"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="234dp"
-        android:layout_marginTop="7dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginEnd="100dp"
+        android:layout_toEndOf="@+id/timeLineCash"
         android:background="@android:color/holo_blue_light"
-        android:text="SUM"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:text="SUM" />
 
     <ListView
         android:id="@+id/daysList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        >
+        android:layout_height="557dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginBottom="0dp">
     </ListView>
 
 </RelativeLayout>

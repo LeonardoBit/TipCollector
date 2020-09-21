@@ -1,5 +1,6 @@
 package com.example.tipcollector;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -28,12 +29,18 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.IsoFields;
+import java.time.temporal.TemporalAdjusters;
+
 public class TimelineFragment extends Fragment {
 
     ListView daysList;
     ArrayAdapter daysArrayAdapter;
     DataBaseHelper db;
-    TextView timeLineCash,timeLineCard;
+    TextView timeLineCash,timeLineCard,curView;
+
 
 
 
@@ -54,11 +61,14 @@ public class TimelineFragment extends Fragment {
         daysList = v.findViewById(R.id.daysList);
         timeLineCash = v.findViewById(R.id.timeLineCash);
         timeLineCard = v.findViewById(R.id.timeLineCard);
+        curView = v.findViewById(R.id.curView);
 
-
+        curView.setText("All records");
         db = new DataBaseHelper(getActivity());
         daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.getAll());
         daysList.setAdapter(daysArrayAdapter);
+
+
         timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
         timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
 
@@ -115,9 +125,24 @@ public class TimelineFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        LocalDate ld = LocalDate.now();
+
         switch (item.getItemId()) {
-            case R.id.week_view:
+            case R.id.week_view:              // WEEK VIEW
                  showCurrentWeekDays(db);
+
+
+                int weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) ;
+                LocalDate firstDayOfWeek = LocalDate.now()
+                        .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
+                        .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+
+                LocalDate lastDayOfWeek = LocalDate.now()
+                        .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
+                        .with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+
+                String firstAndLastDayOfWeek = firstDayOfWeek.toString() + " - " + lastDayOfWeek.toString();
 
 
 
@@ -158,15 +183,19 @@ public class TimelineFragment extends Fragment {
 
                     }
                 });
-
-
-
-
+                    curView.setText(firstAndLastDayOfWeek);
                     timeLineCash.setText(String.valueOf(db.sumOfAllWeekCash()));
                     timeLineCard.setText(String.valueOf(db.sumOfAllWeekCard()));
                 return true;
-            case R.id.month_view:
+
+
+
+                case R.id.month_view:       // MONTH VIEW
                   showCurrentMonthDays(db);
+
+                    String curMonth = String.valueOf(ld.getMonth());
+
+
 
 
                 daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -211,11 +240,16 @@ public class TimelineFragment extends Fragment {
 
 
 
-
+                    curView.setText(curMonth);
                     timeLineCash.setText(String.valueOf(db.sumOfAllMonthCash()));
                     timeLineCard.setText(String.valueOf(db.sumOfAllMonthCard()));
                 return true;
-            case R.id.all_view:
+
+
+
+
+
+            case R.id.all_view:     // ALL RECORDS
                  showAllDays(db);
 
                 daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -270,6 +304,7 @@ public class TimelineFragment extends Fragment {
     private void showAllDays(DataBaseHelper dataBaseHelper2 ){
         daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.getAll());
         daysList.setAdapter(daysArrayAdapter);
+        curView.setText("All records");
 
     }
 
