@@ -1,6 +1,6 @@
 package com.example.tipcollector;
 
-import android.annotation.SuppressLint;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -13,21 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabItem;
-import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
+
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -40,6 +36,7 @@ public class TimelineFragment extends Fragment {
     ArrayAdapter daysArrayAdapter;
     DataBaseHelper db;
     TextView timeLineCash,timeLineCard,curView;
+    Button previous,next;
 
 
 
@@ -57,20 +54,25 @@ public class TimelineFragment extends Fragment {
 
 
 
-
+        previous = v.findViewById(R.id.btnPrevious);
+        next = v.findViewById(R.id.btnNext);
         daysList = v.findViewById(R.id.daysList);
         timeLineCash = v.findViewById(R.id.timeLineCash);
         timeLineCard = v.findViewById(R.id.timeLineCard);
         curView = v.findViewById(R.id.curView);
 
         curView.setText("All records");
+        allViewRecordsON();
         db = new DataBaseHelper(getActivity());
         daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.getAll());
         daysList.setAdapter(daysArrayAdapter);
 
 
+
         timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
         timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
+
+
 
 
         daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -131,7 +133,7 @@ public class TimelineFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.week_view:              // WEEK VIEW
                  showCurrentWeekDays(db);
-
+                 weekViewRecordsOn();
 
                 int weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) ;
                 LocalDate firstDayOfWeek = LocalDate.now()
@@ -192,7 +194,7 @@ public class TimelineFragment extends Fragment {
 
                 case R.id.month_view:       // MONTH VIEW
                   showCurrentMonthDays(db);
-
+                  monthViewRecordsON();
                     String curMonth = String.valueOf(ld.getMonth());
 
 
@@ -251,7 +253,7 @@ public class TimelineFragment extends Fragment {
 
             case R.id.all_view:     // ALL RECORDS
                  showAllDays(db);
-
+                 allViewRecordsON();
                 daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
@@ -321,5 +323,28 @@ public class TimelineFragment extends Fragment {
 
     }
 
+    public void allViewRecordsON(){
+
+        previous.setVisibility(View.INVISIBLE);
+        next.setVisibility(View.INVISIBLE);
+
+    }
+    public void monthViewRecordsON(){
+        previous.setVisibility(View.VISIBLE);
+        next.setVisibility(View.VISIBLE);
+
+        previous.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+    }
+    public void weekViewRecordsOn(){
+        previous.setVisibility(View.VISIBLE);
+        next.setVisibility(View.VISIBLE);
+    }
 }
 

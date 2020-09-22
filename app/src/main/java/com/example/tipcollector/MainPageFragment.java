@@ -25,6 +25,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
         btnAddDay = v.findViewById(R.id.btnAddDay);
         btnAddDay.setOnClickListener(this);
+
     return v;
     }
 
