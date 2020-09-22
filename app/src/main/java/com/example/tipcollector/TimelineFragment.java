@@ -37,6 +37,7 @@ public class TimelineFragment extends Fragment {
     DataBaseHelper db;
     TextView timeLineCash,timeLineCard,curView;
     Button previous,next;
+    long monthChanger = 0;
 
 
 
@@ -71,6 +72,29 @@ public class TimelineFragment extends Fragment {
 
         timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
         timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
+
+
+        previous.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                            monthChanger--;
+
+                                            showPreviousNextMonthDays(db,monthChanger);
+
+
+                                        }
+                                    });
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               monthChanger++;
+               showPreviousNextMonthDays(db,monthChanger);
+
+            }
+        });
+
 
 
 
@@ -333,18 +357,35 @@ public class TimelineFragment extends Fragment {
         previous.setVisibility(View.VISIBLE);
         next.setVisibility(View.VISIBLE);
 
-        previous.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
     }
     public void weekViewRecordsOn(){
         previous.setVisibility(View.VISIBLE);
         next.setVisibility(View.VISIBLE);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void showPreviousNextMonthDays(DataBaseHelper dataBaseHelper, long monthChange){
+
+        if(monthChange>=0){
+            LocalDate ld = LocalDate.now();
+            LocalDate newDate = ld.plusMonths(monthChange);
+
+            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.previousMonth(newDate));
+            daysList.setAdapter(daysArrayAdapter);
+
+        }else if(monthChange<=0){
+            LocalDate ld = LocalDate.now();
+            monthChange = Math.abs(monthChange);
+
+            LocalDate newDate = ld.minusMonths(monthChange);
+
+            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.nextMonth(newDate));
+            daysList.setAdapter(daysArrayAdapter);
+        }
+
+
+    }
+
 }
 

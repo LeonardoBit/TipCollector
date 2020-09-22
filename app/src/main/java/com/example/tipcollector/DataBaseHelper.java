@@ -15,6 +15,7 @@ import java.sql.Date;
 
 import java.time.LocalDate;
 
+import java.time.Month;
 import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 
@@ -360,13 +361,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public List<DayModel> previousMonth(){
+    public List<DayModel> previousMonth(LocalDate previousDate){
 
         List<DayModel> returnList = new ArrayList<>();
-        LocalDate ld = LocalDate.now();
+        LocalDate ld = previousDate;
 
         int yearNumber = ld.getYear();
-        int monthNumber = ld.getMonth().getValue();
+        int monthNumber = ld.getMonthValue();
 
 
 
@@ -414,5 +415,61 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return returnList;
         }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public List<DayModel> nextMonth(LocalDate nextDate){
+
+        List<DayModel> returnList = new ArrayList<>();
+        LocalDate ld = nextDate;
+
+        int yearNumber = ld.getYear();
+        int monthNumber = ld.getMonthValue();
+
+
+
+        String queryString = "SELECT " +
+                " *, " +
+                "strftime('%m', DAY_DATE) as Month, " +
+                "strftime('%Y', DAY_DATE) as Year   " +
+                " FROM " + DAYS_TABLE +
+                " WHERE "+"(Month+0)" +
+                "=" + monthNumber +
+                " AND " + "(Year+0)"+
+                "=" + yearNumber +
+                " ORDER BY " + COLUMN_DAY_DATE +
+                " DESC " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString,null);
+        if(cursor.moveToFirst()){
+            //loop through the cursor(result set) and create new day objects
+            do{
+                int dayId = cursor.getInt(0);
+                Date dayDate = Date.valueOf(cursor.getString(1));
+                int week = cursor.getInt(2);
+                int tipCash = cursor.getInt(3);
+                int tipCard = cursor.getInt(4);
+                int tipSum = cursor.getInt(5);
+
+
+
+
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum);
+                returnList.add(newDay);
+
+            }while (cursor.moveToNext());
+
+        }else{
+            //failure.do not add anything to the list.
+        }
+
+        //close database and cursor
+        cursor.close();
+        db.close();
+
+
+        return returnList;
+    }
+
 
 }
