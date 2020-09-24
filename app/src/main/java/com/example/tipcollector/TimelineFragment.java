@@ -38,6 +38,7 @@ public class TimelineFragment extends Fragment {
     TextView timeLineCash,timeLineCard,curView;
     Button previous,next;
     long monthChanger = 0;
+    long weekChanger = 0 ;
 
 
 
@@ -72,28 +73,6 @@ public class TimelineFragment extends Fragment {
 
         timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
         timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
-
-
-        previous.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-
-                                            monthChanger--;
-
-                                            showPreviousNextMonthDays(db,monthChanger);
-
-
-                                        }
-                                    });
-
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               monthChanger++;
-               showPreviousNextMonthDays(db,monthChanger);
-
-            }
-        });
 
 
 
@@ -169,6 +148,7 @@ public class TimelineFragment extends Fragment {
                         .with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
 
                 String firstAndLastDayOfWeek = firstDayOfWeek.toString() + " - " + lastDayOfWeek.toString();
+                curView.setText(firstAndLastDayOfWeek);
 
 
 
@@ -209,7 +189,7 @@ public class TimelineFragment extends Fragment {
 
                     }
                 });
-                    curView.setText(firstAndLastDayOfWeek);
+
                     timeLineCash.setText(String.valueOf(db.sumOfAllWeekCash()));
                     timeLineCard.setText(String.valueOf(db.sumOfAllWeekCard()));
                 return true;
@@ -219,8 +199,8 @@ public class TimelineFragment extends Fragment {
                 case R.id.month_view:       // MONTH VIEW
                   showCurrentMonthDays(db);
                   monthViewRecordsON();
-                    String curMonth = String.valueOf(ld.getMonth());
-
+                  String monthDate = ld.getMonth() + " " + ld.getYear();
+                  curView.setText(monthDate);
 
 
 
@@ -263,10 +243,6 @@ public class TimelineFragment extends Fragment {
 
 
 
-
-
-
-                    curView.setText(curMonth);
                     timeLineCash.setText(String.valueOf(db.sumOfAllMonthCash()));
                     timeLineCard.setText(String.valueOf(db.sumOfAllMonthCard()));
                 return true;
@@ -335,16 +311,17 @@ public class TimelineFragment extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void showCurrentWeekDays(DataBaseHelper dataBaseHelper){
+    private boolean showCurrentWeekDays(DataBaseHelper dataBaseHelper){
         daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.getCurrentWeek());
         daysList.setAdapter(daysArrayAdapter);
+        return true;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void showCurrentMonthDays(DataBaseHelper dataBaseHelper){
+    private boolean showCurrentMonthDays(DataBaseHelper dataBaseHelper){
         daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.getCurrentMonth());
         daysList.setAdapter(daysArrayAdapter);
-
+        return true;
     }
 
     public void allViewRecordsON(){
@@ -353,15 +330,63 @@ public class TimelineFragment extends Fragment {
         next.setVisibility(View.INVISIBLE);
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void monthViewRecordsON(){
         previous.setVisibility(View.VISIBLE);
         next.setVisibility(View.VISIBLE);
 
+        if(showCurrentMonthDays(db)==true) {
+            previous.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onClick(View v) {
+                    monthChanger--;
+                    showPreviousNextMonthDays(db, monthChanger);
+
+
+
+                }
+            });
+
+            next.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onClick(View v) {
+                    monthChanger++;
+                    showPreviousNextMonthDays(db, monthChanger);
+
+                }
+            });
+        }
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void weekViewRecordsOn(){
         previous.setVisibility(View.VISIBLE);
         next.setVisibility(View.VISIBLE);
+        /*if(showCurrentWeekDays(db)){
+            previous.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    weekChanger--;
+                    showPreviousNextWeekDays(db,weekChanger);
+                    timeLineCash.setText(String.valueOf(db.sumOfAllPreviousWeekCash(weekChanger)));
+                    timeLineCard.setText(String.valueOf(db.sumOfAllPreviousWeekCard(weekChanger)));
+
+                }
+            });
+
+            next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    weekChanger++;
+                    showPreviousNextWeekDays(db,weekChanger);
+                    timeLineCash.setText(String.valueOf(db.sumOfAllPreviousWeekCash(weekChanger)));
+                    timeLineCard.setText(String.valueOf(db.sumOfAllPreviousWeekCard(weekChanger)));
+
+                }
+            });
+        }*/
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -373,6 +398,12 @@ public class TimelineFragment extends Fragment {
 
             daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.previousMonth(newDate));
             daysList.setAdapter(daysArrayAdapter);
+            String monthDate = newDate.getMonth() +" "+ newDate.getYear();
+            curView.setText(monthDate);
+            timeLineCash.setText(String.valueOf(db.sumOfAllPreviousMonthCash(newDate)));
+            timeLineCard.setText(String.valueOf(db.sumOfAllPreviousMonthCard(newDate)));
+
+
 
         }else if(monthChange<=0){
             LocalDate ld = LocalDate.now();
@@ -380,8 +411,60 @@ public class TimelineFragment extends Fragment {
 
             LocalDate newDate = ld.minusMonths(monthChange);
 
+            String monthDate = newDate.getMonth() +" "+ newDate.getYear();
+
             daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.nextMonth(newDate));
             daysList.setAdapter(daysArrayAdapter);
+            curView.setText(monthDate);
+            timeLineCash.setText(String.valueOf(db.sumOfAllPreviousMonthCash(newDate)));
+            timeLineCard.setText(String.valueOf(db.sumOfAllPreviousMonthCard(newDate)));
+        }
+
+
+
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void showPreviousNextWeekDays(DataBaseHelper dataBaseHelper, long weekChange){
+
+        if(weekChange>=0){
+            LocalDate ld = LocalDate.now();
+            weekChange = Math.abs(weekChange);
+            long weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) + weekChange;
+
+            LocalDate firstDayOfWeek = LocalDate.now()
+                    .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
+                    .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+
+            LocalDate lastDayOfWeek = LocalDate.now()
+                    .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
+                    .with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+
+            String firstAndLastDayOfWeek = firstDayOfWeek.toString() + " - " + lastDayOfWeek.toString();
+            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.NextWeek(weekChange));
+            daysList.setAdapter(daysArrayAdapter);
+
+            curView.setText(firstAndLastDayOfWeek);
+
+
+
+        }else {
+            LocalDate ld = LocalDate.now();
+            weekChange = Math.abs(weekChange);
+            long weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) - weekChange;
+
+            LocalDate firstDayOfWeek = LocalDate.now()
+                    .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
+                    .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+
+            LocalDate lastDayOfWeek = LocalDate.now()
+                    .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
+                    .with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+
+            String firstAndLastDayOfWeek = firstDayOfWeek.toString() + " - " + lastDayOfWeek.toString();
+            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.previousWeek(weekChange));
+            daysList.setAdapter(daysArrayAdapter);
+
+            curView.setText(firstAndLastDayOfWeek);
         }
 
 

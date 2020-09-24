@@ -136,6 +136,40 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return returnList;
     }
+    public int sumOfAllCash() {
+
+        int sumOfAllCash = 0;
+
+        String queryString = "SELECT SUM( TIP_CASH ) AS totalCash " + "  FROM DAYS_TABLE";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst())
+            sumOfAllCash = cursor.getInt(cursor.getColumnIndex("totalCash"));
+
+
+        return sumOfAllCash;
+    }
+    public int sumOfAllCard() {
+
+        int sumOfAllCard = 0;
+
+        String queryString = "SELECT SUM( TIP_CARD ) AS totalCard " + "  FROM DAYS_TABLE";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst())
+            sumOfAllCard = cursor.getInt(cursor.getColumnIndex("totalCard"));
+
+
+        return sumOfAllCard;
+
+
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<DayModel> getCurrentWeek(){
@@ -177,6 +211,155 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
         return returnList;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int sumOfAllWeekCash(){
+        int sumOfAllCash=0;
+
+        LocalDate ld = LocalDate.now();
+        int weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) ;
+
+        String queryString = " SELECT SUM( TIP_CASH ) AS totalCash FROM " + DAYS_TABLE + " WHERE "+ COLUMN_WEEK+  "=" +  weekNumber ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+        if (cursor.moveToFirst())
+            sumOfAllCash = cursor.getInt(cursor.getColumnIndex("totalCash"));
+
+
+        return sumOfAllCash;
+
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int sumOfAllWeekCard(){
+        int sumOfAllWeekCard=0;
+
+        LocalDate ld = LocalDate.now();
+        int weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) ;
+
+        String queryString = "SELECT SUM( TIP_CARD ) AS totalCard FROM " + DAYS_TABLE + " WHERE "+ COLUMN_WEEK+  "=" +  weekNumber ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+        if (cursor.moveToFirst())
+            sumOfAllWeekCard = cursor.getInt(cursor.getColumnIndex("totalCard"));
+
+
+        return sumOfAllWeekCard;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public List<DayModel> previousWeek(long weekChanger){
+        List<DayModel> returnList = new ArrayList<>();
+
+        LocalDate ld = LocalDate.now();
+        long weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) - weekChanger;
+
+        String queryString = "SELECT * FROM " + DAYS_TABLE + " WHERE "+ COLUMN_WEEK+  "=" +  weekNumber +  " ORDER BY " + COLUMN_DAY_DATE + " DESC " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString,null);
+        if(cursor.moveToFirst()){
+            //loop through the cursor(result set) and create new day objects
+            do{
+                int dayId = cursor.getInt(0);
+                Date dayDate = Date.valueOf(cursor.getString(1));
+                int week = cursor.getInt(2);
+                int tipCash = cursor.getInt(3);
+                int tipCard = cursor.getInt(4);
+                int tipSum = cursor.getInt(5);
+
+
+
+
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum);
+                returnList.add(newDay);
+
+            }while (cursor.moveToNext());
+
+        }else{
+            //failure.do not add anything to the list.
+        }
+
+        //close database and cursor
+        cursor.close();
+        db.close();
+
+
+        return returnList;
+
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public List<DayModel> NextWeek(long weekChanger){
+        List<DayModel> returnList = new ArrayList<>();
+
+        LocalDate ld = LocalDate.now();
+        long weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) + weekChanger;
+
+        String queryString = "SELECT * FROM " + DAYS_TABLE + " WHERE "+ COLUMN_WEEK+  "=" +  weekNumber +  " ORDER BY " + COLUMN_DAY_DATE + " DESC " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString,null);
+        if(cursor.moveToFirst()){
+            //loop through the cursor(result set) and create new day objects
+            do{
+                int dayId = cursor.getInt(0);
+                Date dayDate = Date.valueOf(cursor.getString(1));
+                int week = cursor.getInt(2);
+                int tipCash = cursor.getInt(3);
+                int tipCard = cursor.getInt(4);
+                int tipSum = cursor.getInt(5);
+
+
+
+
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum);
+                returnList.add(newDay);
+
+            }while (cursor.moveToNext());
+
+        }else{
+            //failure.do not add anything to the list.
+        }
+
+        //close database and cursor
+        cursor.close();
+        db.close();
+
+
+        return returnList;
+
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int sumOfAllPreviousWeekCash(long weekChanger){
+        int sumOfAllCash=0;
+
+        LocalDate ld = LocalDate.now();
+        long weekNumber =  ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) - weekChanger;
+
+        String queryString = " SELECT SUM( TIP_CASH ) AS totalCash FROM " + DAYS_TABLE + " WHERE "+ COLUMN_WEEK+  "=" +  weekNumber ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+        if (cursor.moveToFirst())
+            sumOfAllCash = cursor.getInt(cursor.getColumnIndex("totalCash"));
+
+
+        return sumOfAllCash;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int sumOfAllPreviousWeekCard(long weekChanger){
+        int sumOfAllCard=0;
+
+        LocalDate ld = LocalDate.now();
+        long weekNumber =  ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) - weekChanger;
+
+        String queryString = " SELECT SUM( TIP_CARD ) AS totalCard FROM " + DAYS_TABLE + " WHERE "+ COLUMN_WEEK+  "=" +  weekNumber ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+        if (cursor.moveToFirst())
+            sumOfAllCard = cursor.getInt(cursor.getColumnIndex("totalCard"));
+
+
+        return sumOfAllCard;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -230,74 +413,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
         return returnList;
-    }
-
-    public int sumOfAllCash() {
-
-        int sumOfAllCash = 0;
-
-        String queryString = "SELECT SUM( TIP_CASH ) AS totalCash " + "  FROM DAYS_TABLE";
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(queryString, null);
-
-        if (cursor.moveToFirst())
-            sumOfAllCash = cursor.getInt(cursor.getColumnIndex("totalCash"));
-
-
-        return sumOfAllCash;
-    }
-    public int sumOfAllCard() {
-
-        int sumOfAllCard = 0;
-
-        String queryString = "SELECT SUM( TIP_CARD ) AS totalCard " + "  FROM DAYS_TABLE";
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(queryString, null);
-
-        if (cursor.moveToFirst())
-            sumOfAllCard = cursor.getInt(cursor.getColumnIndex("totalCard"));
-
-
-        return sumOfAllCard;
-
-
-    }
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public int sumOfAllWeekCash(){
-        int sumOfAllCash=0;
-
-        LocalDate ld = LocalDate.now();
-        int weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) ;
-
-        String queryString = " SELECT SUM( TIP_CASH ) AS totalCash FROM " + DAYS_TABLE + " WHERE "+ COLUMN_WEEK+  "=" +  weekNumber ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(queryString,null);
-        if (cursor.moveToFirst())
-            sumOfAllCash = cursor.getInt(cursor.getColumnIndex("totalCash"));
-
-
-        return sumOfAllCash;
-
-    }
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public int sumOfAllWeekCard(){
-        int sumOfAllWeekCard=0;
-
-        LocalDate ld = LocalDate.now();
-        int weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) ;
-
-        String queryString = "SELECT SUM( TIP_CARD ) AS totalCard FROM " + DAYS_TABLE + " WHERE "+ COLUMN_WEEK+  "=" +  weekNumber ;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(queryString,null);
-        if (cursor.moveToFirst())
-            sumOfAllWeekCard = cursor.getInt(cursor.getColumnIndex("totalCard"));
-
-
-        return sumOfAllWeekCard;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public int sumOfAllMonthCash(){
@@ -359,7 +474,64 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return sumOfAllMonthCard;
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int sumOfAllPreviousMonthCash(LocalDate curDate){
+        int sumOfAllPreviousMonthCash = 0;
 
+
+        int yearNumber = curDate.getYear();
+        int monthNumber = curDate.getMonth().getValue();
+
+        String queryString = "SELECT SUM( TIP_CASH ) AS totalCash, " +
+                "strftime('%m', DAY_DATE) as Month, " +
+                "strftime('%Y', DAY_DATE) as Year   " +
+                " FROM " + DAYS_TABLE +
+                " WHERE "+"(Month+0)" +
+                "=" + monthNumber +
+                " AND " + "(Year+0)"+
+                "=" + yearNumber +
+                " ORDER BY " + COLUMN_DAY_DATE +
+                " DESC " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+
+        if (cursor.moveToFirst())
+            sumOfAllPreviousMonthCash = cursor.getInt(cursor.getColumnIndex("totalCash"));
+
+
+
+        return sumOfAllPreviousMonthCash;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int sumOfAllPreviousMonthCard(LocalDate curDate){
+        int sumOfAllPreviousMonthCard = 0;
+
+
+        int yearNumber = curDate.getYear();
+        int monthNumber = curDate.getMonth().getValue();
+
+        String queryString = "SELECT SUM( TIP_CARD ) AS totalCard, " +
+                "strftime('%m', DAY_DATE) as Month, " +
+                "strftime('%Y', DAY_DATE) as Year   " +
+                " FROM " + DAYS_TABLE +
+                " WHERE "+"(Month+0)" +
+                "=" + monthNumber +
+                " AND " + "(Year+0)"+
+                "=" + yearNumber +
+                " ORDER BY " + COLUMN_DAY_DATE +
+                " DESC " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+
+        if (cursor.moveToFirst())
+            sumOfAllPreviousMonthCard = cursor.getInt(cursor.getColumnIndex("totalCard"));
+
+
+
+        return sumOfAllPreviousMonthCard;
+    }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<DayModel> previousMonth(LocalDate previousDate){
 
