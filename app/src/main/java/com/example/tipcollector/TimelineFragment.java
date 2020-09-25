@@ -17,13 +17,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-
 import androidx.fragment.app.Fragment;
-
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -35,16 +32,10 @@ public class TimelineFragment extends Fragment {
     ListView daysList;
     ArrayAdapter daysArrayAdapter;
     DataBaseHelper db;
-    TextView timeLineCash,timeLineCard,curView;
-    Button previous,next;
+    TextView timeLineCash, timeLineCard, curView;
+    Button previous, next;
+    long weekChanger = 0;
     long monthChanger = 0;
-    long weekChanger = 0 ;
-
-
-
-
-
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -52,8 +43,6 @@ public class TimelineFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_timeline, container, false);
-
-
 
 
         previous = v.findViewById(R.id.btnPrevious);
@@ -66,50 +55,48 @@ public class TimelineFragment extends Fragment {
         curView.setText("All records");
         allViewRecordsON();
         db = new DataBaseHelper(getActivity());
-        daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.getAll());
+        daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.getAll());
         daysList.setAdapter(daysArrayAdapter);
 
 
+        if (allViewRecordsON()) {
+            timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
+            timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
 
-        timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
-        timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
+            daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("")
+                            .setMessage("Are you sure you want to remove this day?")
+                            .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
 
+                                }
+                            })
+                            .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DayModel clickedDay = (DayModel) parent.getItemAtPosition(position);
+                                    daysArrayAdapter.remove(clickedDay);
 
+                                    db.deleteOne(clickedDay);
+                                    daysArrayAdapter.notifyDataSetChanged();
+                                    timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
+                                    timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
+                                }
 
+                            });
 
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    return true;
 
-        daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("")
-                        .setMessage("Are you sure you want to remove this day?")
-                        .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-
-                            }
-                        })
-                        .setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                DayModel clickedDay = (DayModel)parent.getItemAtPosition(position);
-                                daysArrayAdapter.remove(clickedDay);
-
-                                db.deleteOne(clickedDay);
-                                daysArrayAdapter.notifyDataSetChanged();
-
-                            }
-
-                        });
-
-                AlertDialog alert = builder.create();
-                alert.show();
-                return true;
-            }
-        });
-
+                }
+            });
+        }
 
         return v;
     }
@@ -123,7 +110,7 @@ public class TimelineFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        inflater.inflate(R.menu.timeline_menu,menu);
+        inflater.inflate(R.menu.timeline_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -134,11 +121,15 @@ public class TimelineFragment extends Fragment {
         LocalDate ld = LocalDate.now();
 
         switch (item.getItemId()) {
-            case R.id.week_view:              // WEEK VIEW
-                 showCurrentWeekDays(db);
-                 weekViewRecordsOn();
+            case R.id.week_view:     // WEEK VIEW
+                weekChanger = 0;
 
-                int weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) ;
+                showCurrentWeekDays(db);
+                weekViewRecordsOn();
+                timeLineCash.setText(String.valueOf(db.sumOfAllWeekCash()));
+                timeLineCard.setText(String.valueOf(db.sumOfAllWeekCard()));
+
+                int weekNumber = ld.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
                 LocalDate firstDayOfWeek = LocalDate.now()
                         .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
                         .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
@@ -150,11 +141,6 @@ public class TimelineFragment extends Fragment {
                 String firstAndLastDayOfWeek = firstDayOfWeek.toString() + " - " + lastDayOfWeek.toString();
                 curView.setText(firstAndLastDayOfWeek);
 
-
-
-
-
-
                 daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
@@ -171,14 +157,13 @@ public class TimelineFragment extends Fragment {
                                 .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        DayModel clickedDay = (DayModel)parent.getItemAtPosition(position);
+                                        DayModel clickedDay = (DayModel) parent.getItemAtPosition(position);
                                         daysArrayAdapter.remove(clickedDay);
 
                                         db.deleteOne(clickedDay);
                                         daysArrayAdapter.notifyDataSetChanged();
                                         timeLineCash.setText(String.valueOf(db.sumOfAllWeekCash()));
                                         timeLineCard.setText(String.valueOf(db.sumOfAllWeekCard()));
-
                                     }
 
                                 });
@@ -190,19 +175,37 @@ public class TimelineFragment extends Fragment {
                     }
                 });
 
-                    timeLineCash.setText(String.valueOf(db.sumOfAllWeekCash()));
-                    timeLineCard.setText(String.valueOf(db.sumOfAllWeekCard()));
+                if (showCurrentWeekDays(db)) {
+                    previous.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            weekChanger--;
+                            showPreviousNextWeekDays(db, weekChanger);
+                        }
+                    });
+
+                    next.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            weekChanger++;
+                            showPreviousNextWeekDays(db, weekChanger);
+                        }
+                    });
+                }
+
                 return true;
 
 
+            case R.id.month_view:       // MONTH VIEW
+                monthChanger = 0;
+                showCurrentMonthDays(db);
+                monthViewRecordsON();
+                timeLineCash.setText(String.valueOf(db.sumOfAllMonthCash()));
+                timeLineCard.setText(String.valueOf(db.sumOfAllMonthCard()));
 
-                case R.id.month_view:       // MONTH VIEW
-                  showCurrentMonthDays(db);
-                  monthViewRecordsON();
-                  String monthDate = ld.getMonth() + " " + ld.getYear();
-                  curView.setText(monthDate);
 
-
+                final String monthDate = ld.getMonth() + " " + ld.getYear();
+                curView.setText(monthDate);
 
                 daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
@@ -220,14 +223,13 @@ public class TimelineFragment extends Fragment {
                                 .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        DayModel clickedDay = (DayModel)parent.getItemAtPosition(position);
+                                        DayModel clickedDay = (DayModel) parent.getItemAtPosition(position);
                                         daysArrayAdapter.remove(clickedDay);
 
                                         db.deleteOne(clickedDay);
                                         daysArrayAdapter.notifyDataSetChanged();
                                         timeLineCash.setText(String.valueOf(db.sumOfAllMonthCash()));
                                         timeLineCard.setText(String.valueOf(db.sumOfAllMonthCard()));
-
                                     }
 
                                 });
@@ -240,20 +242,35 @@ public class TimelineFragment extends Fragment {
                 });
 
 
+                previous.setOnClickListener(new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onClick(View v) {
+                        monthChanger--;
+                        showPreviousNextMonthDays(db, monthChanger);
 
+                    }
+                });
 
+                next.setOnClickListener(new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onClick(View v) {
+                        monthChanger++;
+                        showPreviousNextMonthDays(db, monthChanger);
 
-                    timeLineCash.setText(String.valueOf(db.sumOfAllMonthCash()));
-                    timeLineCard.setText(String.valueOf(db.sumOfAllMonthCard()));
+                    }
+                });
+
                 return true;
 
 
-
-
-
             case R.id.all_view:     // ALL RECORDS
-                 showAllDays(db);
-                 allViewRecordsON();
+                showAllDays(db);
+                allViewRecordsON();
+                timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
+                timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
+
                 daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
@@ -270,7 +287,7 @@ public class TimelineFragment extends Fragment {
                                 .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        DayModel clickedDay = (DayModel)parent.getItemAtPosition(position);
+                                        DayModel clickedDay = (DayModel) parent.getItemAtPosition(position);
                                         daysArrayAdapter.remove(clickedDay);
 
                                         db.deleteOne(clickedDay);
@@ -289,11 +306,6 @@ public class TimelineFragment extends Fragment {
                     }
                 });
 
-
-
-
-                    timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
-                    timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
                 return true;
             default:
                 break;
@@ -303,133 +315,168 @@ public class TimelineFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void showAllDays(DataBaseHelper dataBaseHelper2 ){
-        daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.getAll());
+    private void showAllDays(DataBaseHelper dataBaseHelper2) {
+        daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.getAll());
         daysList.setAdapter(daysArrayAdapter);
         curView.setText("All records");
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private boolean showCurrentWeekDays(DataBaseHelper dataBaseHelper){
-        daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.getCurrentWeek());
+    private boolean showCurrentWeekDays(DataBaseHelper dataBaseHelper) {
+        daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.getCurrentWeek());
         daysList.setAdapter(daysArrayAdapter);
         return true;
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private boolean showCurrentMonthDays(DataBaseHelper dataBaseHelper){
-        daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.getCurrentMonth());
+    private boolean showCurrentMonthDays(DataBaseHelper dataBaseHelper) {
+        daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.getCurrentMonth());
         daysList.setAdapter(daysArrayAdapter);
+
         return true;
     }
 
-    public void allViewRecordsON(){
+
+    public boolean allViewRecordsON() {
 
         previous.setVisibility(View.INVISIBLE);
         next.setVisibility(View.INVISIBLE);
 
+
+        return true;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void monthViewRecordsON(){
+    public boolean monthViewRecordsON() {
         previous.setVisibility(View.VISIBLE);
         next.setVisibility(View.VISIBLE);
 
-        if(showCurrentMonthDays(db)==true) {
-            previous.setOnClickListener(new View.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public void onClick(View v) {
-                    monthChanger--;
-                    showPreviousNextMonthDays(db, monthChanger);
-
-
-
-                }
-            });
-
-            next.setOnClickListener(new View.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public void onClick(View v) {
-                    monthChanger++;
-                    showPreviousNextMonthDays(db, monthChanger);
-
-                }
-            });
-        }
-
+        return true;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void weekViewRecordsOn(){
+    public void weekViewRecordsOn() {
+
         previous.setVisibility(View.VISIBLE);
         next.setVisibility(View.VISIBLE);
-        /*if(showCurrentWeekDays(db)){
-            previous.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    weekChanger--;
-                    showPreviousNextWeekDays(db,weekChanger);
-                    timeLineCash.setText(String.valueOf(db.sumOfAllPreviousWeekCash(weekChanger)));
-                    timeLineCard.setText(String.valueOf(db.sumOfAllPreviousWeekCard(weekChanger)));
 
-                }
-            });
-
-            next.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    weekChanger++;
-                    showPreviousNextWeekDays(db,weekChanger);
-                    timeLineCash.setText(String.valueOf(db.sumOfAllPreviousWeekCash(weekChanger)));
-                    timeLineCard.setText(String.valueOf(db.sumOfAllPreviousWeekCard(weekChanger)));
-
-                }
-            });
-        }*/
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void showPreviousNextMonthDays(DataBaseHelper dataBaseHelper, long monthChange){
 
-        if(monthChange>=0){
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void showPreviousNextMonthDays(DataBaseHelper dataBaseHelper, long monthChange) {
+
+        if (monthChange >= 0) {
+
             LocalDate ld = LocalDate.now();
-            LocalDate newDate = ld.plusMonths(monthChange);
-
-            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.previousMonth(newDate));
+            final LocalDate newDate = ld.plusMonths(monthChanger);
+            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.previousMonth(newDate));
             daysList.setAdapter(daysArrayAdapter);
-            String monthDate = newDate.getMonth() +" "+ newDate.getYear();
+            String monthDate = newDate.getMonth() + " " + newDate.getYear();
             curView.setText(monthDate);
-            timeLineCash.setText(String.valueOf(db.sumOfAllPreviousMonthCash(newDate)));
-            timeLineCard.setText(String.valueOf(db.sumOfAllPreviousMonthCard(newDate)));
+            timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextMonthCash(newDate)));
+            timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextMonthCard(newDate)));
 
 
+            daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("")
+                            .setMessage("Are you sure you want to remove this day?")
+                            .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
 
-        }else if(monthChange<=0){
+                                }
+                            })
+                            .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DayModel clickedDay = (DayModel) parent.getItemAtPosition(position);
+                                    daysArrayAdapter.remove(clickedDay);
+
+                                    db.deleteOne(clickedDay);
+                                    daysArrayAdapter.notifyDataSetChanged();
+                                    timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextMonthCash(newDate)));
+                                    timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextMonthCard(newDate)));
+
+                                }
+
+                            });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    return true;
+
+                }
+            });
+
+
+        } else if (monthChange <= 0) {
             LocalDate ld = LocalDate.now();
             monthChange = Math.abs(monthChange);
 
-            LocalDate newDate = ld.minusMonths(monthChange);
+            final LocalDate newDate = ld.minusMonths(monthChange);
 
-            String monthDate = newDate.getMonth() +" "+ newDate.getYear();
+            String monthDate = newDate.getMonth() + " " + newDate.getYear();
 
-            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.nextMonth(newDate));
+            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.nextMonth(newDate));
             daysList.setAdapter(daysArrayAdapter);
             curView.setText(monthDate);
-            timeLineCash.setText(String.valueOf(db.sumOfAllPreviousMonthCash(newDate)));
-            timeLineCard.setText(String.valueOf(db.sumOfAllPreviousMonthCard(newDate)));
+            timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextMonthCash(newDate)));
+            timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextMonthCard(newDate)));
+
+            daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("")
+                            .setMessage("Are you sure you want to remove this day?")
+                            .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+
+                                }
+                            })
+                            .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DayModel clickedDay = (DayModel) parent.getItemAtPosition(position);
+                                    daysArrayAdapter.remove(clickedDay);
+
+                                    db.deleteOne(clickedDay);
+                                    daysArrayAdapter.notifyDataSetChanged();
+                                    timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextMonthCash(newDate)));
+                                    timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextMonthCard(newDate)));
+
+                                }
+
+                            });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    return true;
+
+                }
+            });
+
         }
 
 
-
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void showPreviousNextWeekDays(DataBaseHelper dataBaseHelper, long weekChange){
+    public void showPreviousNextWeekDays(DataBaseHelper dataBaseHelper, long weekChange) {
 
-        if(weekChange>=0){
+        if (weekChange >= 0) {
             LocalDate ld = LocalDate.now();
-            weekChange = Math.abs(weekChange);
-            long weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) + weekChange;
+
+            final long weekNumber = ld.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) + weekChange;
 
             LocalDate firstDayOfWeek = LocalDate.now()
                     .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
@@ -440,17 +487,56 @@ public class TimelineFragment extends Fragment {
                     .with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
 
             String firstAndLastDayOfWeek = firstDayOfWeek.toString() + " - " + lastDayOfWeek.toString();
-            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.NextWeek(weekChange));
+            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.NextWeek(weekChange));
             daysList.setAdapter(daysArrayAdapter);
 
+            daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("")
+                            .setMessage("Are you sure you want to remove this day?")
+                            .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+
+                                }
+                            })
+                            .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DayModel clickedDay = (DayModel) parent.getItemAtPosition(position);
+                                    daysArrayAdapter.remove(clickedDay);
+
+                                    db.deleteOne(clickedDay);
+                                    daysArrayAdapter.notifyDataSetChanged();
+                                    timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(weekNumber)));
+                                    timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(weekNumber)));
+
+                                }
+
+                            });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    return true;
+
+                }
+            });
+
             curView.setText(firstAndLastDayOfWeek);
+            timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(weekNumber)));
+            timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(weekNumber)));
 
 
+        } else if (weekChange < 0) {
 
-        }else {
             LocalDate ld = LocalDate.now();
+
+
             weekChange = Math.abs(weekChange);
-            long weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) - weekChange;
+            final long weekNumber = ld.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) - weekChange;
 
             LocalDate firstDayOfWeek = LocalDate.now()
                     .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
@@ -461,10 +547,50 @@ public class TimelineFragment extends Fragment {
                     .with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
 
             String firstAndLastDayOfWeek = firstDayOfWeek.toString() + " - " + lastDayOfWeek.toString();
-            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(),android.R.layout.simple_list_item_1,db.previousWeek(weekChange));
+            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.previousWeek(weekChange));
             daysList.setAdapter(daysArrayAdapter);
 
+
+            daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("")
+                            .setMessage("Are you sure you want to remove this day?")
+                            .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+
+                                }
+                            })
+                            .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DayModel clickedDay = (DayModel) parent.getItemAtPosition(position);
+                                    daysArrayAdapter.remove(clickedDay);
+
+                                    db.deleteOne(clickedDay);
+                                    daysArrayAdapter.notifyDataSetChanged();
+                                    timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(weekNumber)));
+                                    timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(weekNumber)));
+
+                                }
+
+                            });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    return true;
+
+                }
+            });
+
+
             curView.setText(firstAndLastDayOfWeek);
+            timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(weekNumber)));
+            timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(weekNumber)));
+
         }
 
 
