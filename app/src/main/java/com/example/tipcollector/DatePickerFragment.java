@@ -16,14 +16,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
-import java.sql.Date;
-import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Locale;
+
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     private static final String TAG = "DatePickerFragment";
@@ -32,14 +30,15 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
-       // Calendar c = Calendar.getInstance();
+
         LocalDate ld = LocalDate.now();
 
         int year = ld.getYear();
         int month = ld.getMonth().getValue()-1;
         int day = ld.getDayOfMonth();
-
-        return new DatePickerDialog(getActivity(),DatePickerFragment.this,year,month,day);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),android.R.style.Theme_DeviceDefault_Dialog,DatePickerFragment.this,year,month,day);
+        datePickerDialog.getDatePicker().setFirstDayOfWeek(2);
+        return datePickerDialog;
     }
 
 
@@ -49,6 +48,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
 
         Calendar c = Calendar.getInstance();
+
 
         c.set(Calendar.YEAR,year);
         c.set(Calendar.MONTH,month);

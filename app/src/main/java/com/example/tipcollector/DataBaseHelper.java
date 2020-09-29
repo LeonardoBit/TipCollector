@@ -337,8 +337,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
             LocalDate ld = LocalDate.now();
+            int year = ld.getYear();
 
-            String queryString = " SELECT SUM( TIP_CASH ) AS totalCash FROM " + DAYS_TABLE + " WHERE " + COLUMN_WEEK + "=" + weekNumber;
+            String queryString = " SELECT SUM( TIP_CASH ) AS totalCash, strftime('%Y', DAY_DATE) as Year FROM " + DAYS_TABLE + " WHERE " + COLUMN_WEEK + "=" + weekNumber ;
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.rawQuery(queryString, null);
             if (cursor.moveToFirst())
@@ -354,8 +355,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
         LocalDate ld = LocalDate.now();
+        int year = ld.getYear();
 
-        String queryString = " SELECT SUM( TIP_CARD ) AS totalCard FROM " + DAYS_TABLE + " WHERE " + COLUMN_WEEK + "=" + weekNumber;
+        String queryString = " SELECT SUM( TIP_CARD ) AS totalCard, strftime('%Y', DAY_DATE) as Year FROM " + DAYS_TABLE + " WHERE " + COLUMN_WEEK + "=" + weekNumber ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString, null);
         if (cursor.moveToFirst())

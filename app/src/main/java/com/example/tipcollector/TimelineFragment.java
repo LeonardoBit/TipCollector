@@ -27,6 +27,8 @@ import java.time.LocalDate;
 import java.time.temporal.IsoFields;
 import java.time.temporal.TemporalAdjusters;
 
+
+
 public class TimelineFragment extends Fragment {
 
     ListView daysList;
@@ -357,11 +359,11 @@ public class TimelineFragment extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void weekViewRecordsOn() {
+    public boolean weekViewRecordsOn() {
 
         previous.setVisibility(View.VISIBLE);
         next.setVisibility(View.VISIBLE);
-
+return true;
     }
 
 
@@ -474,17 +476,21 @@ public class TimelineFragment extends Fragment {
     public void showPreviousNextWeekDays(DataBaseHelper dataBaseHelper, long weekChange) {
 
         if (weekChange >= 0) {
-            LocalDate ld = LocalDate.now();
+            LocalDate ld = LocalDate.now().plusWeeks(weekChange);
 
-            final long weekNumber = ld.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) + weekChange;
+            final long weekNumber = ld.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 
-            LocalDate firstDayOfWeek = LocalDate.now()
+
+
+             LocalDate firstDayOfWeek = ld.now()
+                     .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
+                     .with(DayOfWeek.MONDAY);
+
+
+            LocalDate lastDayOfWeek = ld.now()
                     .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
-                    .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+                    .with(DayOfWeek.SUNDAY);
 
-            LocalDate lastDayOfWeek = LocalDate.now()
-                    .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
-                    .with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
 
             String firstAndLastDayOfWeek = firstDayOfWeek.toString() + " - " + lastDayOfWeek.toString();
             daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.NextWeek(weekChange));
@@ -531,12 +537,12 @@ public class TimelineFragment extends Fragment {
 
 
         } else if (weekChange < 0) {
-
-            LocalDate ld = LocalDate.now();
-
-
             weekChange = Math.abs(weekChange);
-            final long weekNumber = ld.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) - weekChange;
+            LocalDate ld = LocalDate.now().minusWeeks(weekChange);
+
+
+
+            final long weekNumber = ld.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 
             LocalDate firstDayOfWeek = LocalDate.now()
                     .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)

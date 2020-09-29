@@ -35,7 +35,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             case R.id.btnAddDay:
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.fragment_container, new AddDayFragment());
+                ft.replace(R.id.fragment_container, new AddDayFragment()).addToBackStack(null);
                 ft.commit();
 
         }

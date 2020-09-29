@@ -102,6 +102,11 @@ public class AddDayFragment extends Fragment {
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        showSoftwareKeyboard(false);
+    }
 
     @Override
     public void onDetach() {
@@ -231,11 +236,6 @@ public class AddDayFragment extends Fragment {
         String dateOfWeek = mDisplayDate.getText().toString();
         LocalDate ld = LocalDate.parse(dateOfWeek,formatter) ;
         int week = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) ;
-
-
-
-
-
 
         return week;
     }
