@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.IsoFields;
 import java.time.temporal.TemporalAdjusters;
 
@@ -476,24 +477,16 @@ return true;
     public void showPreviousNextWeekDays(DataBaseHelper dataBaseHelper, long weekChange) {
 
         if (weekChange >= 0) {
-            LocalDate ld = LocalDate.now().plusWeeks(weekChange);
+            final LocalDate ld = LocalDate.now(ZoneId.systemDefault()).plusWeeks(weekChange);
 
             final long weekNumber = ld.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 
-
-
-             LocalDate firstDayOfWeek = ld.now()
-                     .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
-                     .with(DayOfWeek.MONDAY);
-
-
-            LocalDate lastDayOfWeek = ld.now()
-                    .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
-                    .with(DayOfWeek.SUNDAY);
+             final LocalDate firstDayOfWeek = ld.with(DayOfWeek.MONDAY);
+            final LocalDate lastDayOfWeek = ld.with(DayOfWeek.SUNDAY);
 
 
             String firstAndLastDayOfWeek = firstDayOfWeek.toString() + " - " + lastDayOfWeek.toString();
-            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.NextWeek(weekChange));
+            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.NextWeek(firstDayOfWeek,lastDayOfWeek));
             daysList.setAdapter(daysArrayAdapter);
 
             daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -517,8 +510,8 @@ return true;
 
                                     db.deleteOne(clickedDay);
                                     daysArrayAdapter.notifyDataSetChanged();
-                                    timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(weekNumber)));
-                                    timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(weekNumber)));
+                                    timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(firstDayOfWeek,lastDayOfWeek)));
+                                    timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(firstDayOfWeek,lastDayOfWeek)));
 
                                 }
 
@@ -532,28 +525,23 @@ return true;
             });
 
             curView.setText(firstAndLastDayOfWeek);
-            timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(weekNumber)));
-            timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(weekNumber)));
+            timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(firstDayOfWeek,lastDayOfWeek)));
+            timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(firstDayOfWeek,lastDayOfWeek)));
 
 
         } else if (weekChange < 0) {
             weekChange = Math.abs(weekChange);
-            LocalDate ld = LocalDate.now().minusWeeks(weekChange);
+            final LocalDate ld = LocalDate.now().minusWeeks(weekChange);
 
 
 
             final long weekNumber = ld.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 
-            LocalDate firstDayOfWeek = LocalDate.now()
-                    .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
-                    .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-
-            LocalDate lastDayOfWeek = LocalDate.now()
-                    .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, weekNumber)
-                    .with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+            final LocalDate firstDayOfWeek = ld.with(DayOfWeek.MONDAY);
+            final LocalDate lastDayOfWeek = ld.with(DayOfWeek.SUNDAY);
 
             String firstAndLastDayOfWeek = firstDayOfWeek.toString() + " - " + lastDayOfWeek.toString();
-            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.previousWeek(weekChange));
+            daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.previousWeek(firstDayOfWeek,lastDayOfWeek));
             daysList.setAdapter(daysArrayAdapter);
 
 
@@ -578,8 +566,8 @@ return true;
 
                                     db.deleteOne(clickedDay);
                                     daysArrayAdapter.notifyDataSetChanged();
-                                    timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(weekNumber)));
-                                    timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(weekNumber)));
+                                    timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(firstDayOfWeek,lastDayOfWeek)));
+                                    timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(firstDayOfWeek,lastDayOfWeek)));
 
                                 }
 
@@ -594,8 +582,8 @@ return true;
 
 
             curView.setText(firstAndLastDayOfWeek);
-            timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(weekNumber)));
-            timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(weekNumber)));
+            timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(firstDayOfWeek,lastDayOfWeek)));
+            timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(firstDayOfWeek,lastDayOfWeek)));
 
         }
 

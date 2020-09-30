@@ -173,13 +173,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public List<DayModel> previousWeek(long weekChanger){
+    public List<DayModel> previousWeek(LocalDate firstDayOfWeek,LocalDate lastDayOfWeek){
         List<DayModel> returnList = new ArrayList<>();
 
         LocalDate ld = LocalDate.now();
-        long weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) - weekChanger;
+       // long weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) - weekChanger;
 
-        String queryString = "SELECT * FROM " + DAYS_TABLE + " WHERE "+ COLUMN_WEEK+  "=" +  weekNumber +  " ORDER BY " + COLUMN_DAY_DATE + " DESC " ;
+        String queryString = "SELECT * FROM " + DAYS_TABLE + " WHERE "+ COLUMN_DAY_DATE +  " BETWEEN " +"'"+ firstDayOfWeek+"'" +
+                " AND " +"'"+ lastDayOfWeek+"'" +  " ORDER BY " + COLUMN_DAY_DATE + " DESC " ;
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -215,13 +216,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public List<DayModel> NextWeek(long weekChanger){
+    public List<DayModel> NextWeek(LocalDate firstDayOfWeek,LocalDate lastDayOfWeek){
         List<DayModel> returnList = new ArrayList<>();
 
         LocalDate ld = LocalDate.now();
-        long weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) + weekChanger;
+        //long weekNumber = ld.get( IsoFields.WEEK_OF_WEEK_BASED_YEAR ) + weekChanger;
 
-        String queryString = "SELECT * FROM " + DAYS_TABLE + " WHERE "+ COLUMN_WEEK+  "=" +  weekNumber +  " ORDER BY " + COLUMN_DAY_DATE + " DESC " ;
+        String queryString = "SELECT * FROM " + DAYS_TABLE + " WHERE "+ COLUMN_DAY_DATE +  " BETWEEN " +"'"+ firstDayOfWeek+"'" +
+                " AND " +"'"+ lastDayOfWeek+"'" +  " ORDER BY " + COLUMN_DAY_DATE + " DESC " ;
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -331,15 +333,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return sumOfAllWeekCard;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public int sumOfAllPreviousNextWeekCash(long weekNumber) {
+    public int sumOfAllPreviousNextWeekCash(LocalDate firstDayOfWeek,LocalDate lastDayOfWeek) {
         int sumOfAllCash = 0;
 
+        String queryString = " SELECT SUM( TIP_CASH ) AS totalCash " +
+                " FROM " + DAYS_TABLE +
+                " WHERE "+ COLUMN_DAY_DATE+
+                " BETWEEN " +"'"+ firstDayOfWeek+"'" +
+                " AND " +"'"+ lastDayOfWeek+"'";
 
-
-            LocalDate ld = LocalDate.now();
-            int year = ld.getYear();
-
-            String queryString = " SELECT SUM( TIP_CASH ) AS totalCash, strftime('%Y', DAY_DATE) as Year FROM " + DAYS_TABLE + " WHERE " + COLUMN_WEEK + "=" + weekNumber ;
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.rawQuery(queryString, null);
             if (cursor.moveToFirst())
@@ -349,15 +351,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return sumOfAllCash;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public int sumOfAllPreviousNextWeekCard(long weekNumber){
+    public int sumOfAllPreviousNextWeekCard(LocalDate firstDayOfWeek, LocalDate lastDayOfWeek){
         int sumOfAllCard = 0;
 
+        String queryString = " SELECT SUM( TIP_CARD ) AS totalCard " +
+                " FROM " + DAYS_TABLE +
+                " WHERE "+ COLUMN_DAY_DATE+
+                " BETWEEN " +"'"+ firstDayOfWeek+"'" +
+                " AND " +"'"+ lastDayOfWeek+"'";
 
-
-        LocalDate ld = LocalDate.now();
-        int year = ld.getYear();
-
-        String queryString = " SELECT SUM( TIP_CARD ) AS totalCard, strftime('%Y', DAY_DATE) as Year FROM " + DAYS_TABLE + " WHERE " + COLUMN_WEEK + "=" + weekNumber ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString, null);
         if (cursor.moveToFirst())

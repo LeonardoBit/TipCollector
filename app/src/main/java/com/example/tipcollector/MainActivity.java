@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity  {
 
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.fragment_container,fragment).commit();
-        item.setChecked(true);
+        item.setChecked(false);
         setTitle(item.getTitle());
 
         drawer.closeDrawer(GravityCompat.START);
