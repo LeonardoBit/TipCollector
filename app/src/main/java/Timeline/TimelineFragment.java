@@ -1,4 +1,4 @@
-package com.example.tipcollector;
+package Timeline;
 
 
 import android.app.AlertDialog;
@@ -22,12 +22,16 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.example.tipcollector.R;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.IsoFields;
 import java.time.temporal.TemporalAdjusters;
 
+import database.DataBaseHelper;
+import com.example.tipcollector.DayModel;
 
 
 public class TimelineFragment extends Fragment {

@@ -1,24 +1,24 @@
 package com.example.tipcollector;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import PageMain.MainPageFragment;
+
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity  {
+import Analysis.AnalysisFragment;
+import Timeline.TimelineFragment;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     private Toolbar toolbar;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity  {
 
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-        setupDrawerContent(navigationView);
+        navigationView.setNavigationItemSelectedListener(this);
 
 
 
@@ -53,34 +53,28 @@ public class MainActivity extends AppCompatActivity  {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new MainPageFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_mainPage);
+
         }
     }
-
-    private void setupDrawerContent(NavigationView navigationView){
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        selectDrawerItem(item);
-                        return true;
-                    }
-                }
-        );
-    }
-
-    private void selectDrawerItem(@NonNull MenuItem item) {
-        Fragment fragment = null;
-        Class fragmentClass = null;
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case  R.id.nav_mainPage:
-                fragmentClass = MainPageFragment.class;
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new MainPageFragment()).addToBackStack(null).commit();
+                setTitle(item.getTitle());
                 break;
             case  R.id.nav_timeline:
-                fragmentClass = TimelineFragment.class;
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new TimelineFragment()).addToBackStack(null).commit();
+                setTitle(item.getTitle());
                 break;
             case  R.id.nav_analysis:
-                fragmentClass = AnalysisFragment.class;
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new AnalysisFragment()).addToBackStack(null).commit();
+                setTitle(item.getTitle());
                 break;
+
             case R.id.nav_share:
                 Toast.makeText(this,"shared somewhere",Toast.LENGTH_LONG).show();
                 break;
@@ -88,22 +82,9 @@ public class MainActivity extends AppCompatActivity  {
                 Toast.makeText(this,"You are in settings",Toast.LENGTH_LONG).show();
                 break;
         }
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.fragment_container,fragment).commit();
-        item.setChecked(false);
-        setTitle(item.getTitle());
-
         drawer.closeDrawer(GravityCompat.START);
-
-
+        return true;
     }
-
 
 
     @Override
@@ -116,4 +97,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     }
+
+
+
 }

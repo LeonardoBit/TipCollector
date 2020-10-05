@@ -1,4 +1,4 @@
-package com.example.tipcollector;
+package database;
 
 
 import android.content.ContentValues;
@@ -11,11 +11,12 @@ import android.os.Build;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.example.tipcollector.DayModel;
+
 import java.sql.Date;
 
 import java.time.LocalDate;
 
-import java.time.Month;
 import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 

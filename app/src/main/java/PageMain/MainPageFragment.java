@@ -1,4 +1,4 @@
-package com.example.tipcollector;
+package PageMain;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.example.tipcollector.R;
+
+import AddDay.AddDayFragment;
 
 public class MainPageFragment extends Fragment implements View.OnClickListener {
 

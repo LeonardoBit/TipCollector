@@ -1,4 +1,4 @@
-package com.example.tipcollector;
+package AddDay;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,11 +25,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import database.DataBaseHelper;
+import com.example.tipcollector.DayModel;
+import PageMain.MainPageFragment;
+import com.example.tipcollector.R;
+
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.IsoFields;
-import java.util.Calendar;
 import java.util.Locale;
 
 
@@ -65,17 +69,17 @@ public class AddDayFragment extends Fragment {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            if (!TextUtils.isEmpty(tipCash.getText().toString().trim()) || !TextUtils.isEmpty(tipCard.getText().toString().trim())) {
-                int cashValue = TextUtils.isEmpty(tipCash.getText()) ? 0 : Integer.parseInt(tipCash.getText().toString().trim());
-                int cardValue = TextUtils.isEmpty(tipCard.getText()) ? 0 : Integer.parseInt(tipCard.getText().toString().trim());
 
-                int sumValue = cashValue + cardValue;
+                if (!TextUtils.isEmpty(tipCash.getText().toString().trim()) || !TextUtils.isEmpty(tipCard.getText().toString().trim())) {
 
-                tipSum.setText(String.valueOf(sumValue));
-            } else {
-                tipSum.setText("sum");
+                            int cashValue = TextUtils.isEmpty(tipCash.getText()) ? 0 : Integer.parseInt(tipCash.getText().toString().trim());
+                            int cardValue = TextUtils.isEmpty(tipCard.getText()) ? 0 : Integer.parseInt(tipCard.getText().toString().trim());
+                            int sumValue = cashValue + cardValue;
+                            tipSum.setText(String.valueOf(sumValue));
+                } else {
+                    tipSum.setText("sum");
+                }
             }
-        }
 
         @Override
         public void afterTextChanged(Editable s) {
@@ -105,19 +109,25 @@ public class AddDayFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        showSoftwareKeyboard(false);
+        hideKeyboard();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        showSoftwareKeyboard(false);
+        hideKeyboard();
+
     }
 
-    private void showSoftwareKeyboard(boolean showKeyboard) {
-        final Activity activity = getActivity();
-        final InputMethodManager inputManager = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), showKeyboard ? InputMethodManager.SHOW_FORCED : InputMethodManager.HIDE_NOT_ALWAYS);
+    void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        View focusedView = getActivity().getCurrentFocus();
+
+        if (focusedView != null) {
+            inputManager.hideSoftInputFromWindow(focusedView.getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     @Nullable
@@ -147,9 +157,9 @@ public class AddDayFragment extends Fragment {
                 datePicker.show(fm,"DatePickerFragment");
             }
         });
+            tipCash.addTextChangedListener(sumCalculator);
+            tipCard.addTextChangedListener(sumCalculator);
 
-        tipCash.addTextChangedListener(sumCalculator);
-        tipCard.addTextChangedListener(sumCalculator);
 
 
 
@@ -221,8 +231,6 @@ public class AddDayFragment extends Fragment {
                 }
             }
         });
-
-
 
 
         return v;

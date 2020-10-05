@@ -1,10 +1,9 @@
-package com.example.tipcollector;
+package AddDay;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import androidx.fragment.app.DialogFragment;
 
 
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Calendar;
 
