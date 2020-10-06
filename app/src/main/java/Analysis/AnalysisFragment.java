@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ public class AnalysisFragment extends Fragment {
 
     ViewPager viewPager;
     TabLayout tabLayout;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -27,6 +29,8 @@ public class AnalysisFragment extends Fragment {
 
         viewPager = v.findViewById(R.id.viewPager);
         tabLayout = v.findViewById(R.id.tabLayout);
+
+
 
         return v;
     }

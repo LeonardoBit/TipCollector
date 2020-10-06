@@ -653,4 +653,28 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public int sumOfAllMondaysTips() {
+        int sumOfAllCash = 0;
+
+        String queryString = " SELECT AVG( TIP_SUM ) AS AverageTip " +
+                " FROM " + DAYS_TABLE +
+                " WHERE "+ COLUMN_DAY_DATE+
+                " BETWEEN " +"'"+ firstDayOfWeek+"'" +
+                " AND " +"'"+ lastDayOfWeek+"'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst())
+            sumOfAllCash = cursor.getInt(cursor.getColumnIndex("totalCash"));
+
+
+        return sumOfAllCash;
+    }
+
+
+
+
+
+
+
 }
