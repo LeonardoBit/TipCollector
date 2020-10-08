@@ -39,7 +39,7 @@ public class TimelineFragment extends Fragment {
     ListView daysList;
     ArrayAdapter daysArrayAdapter;
     DataBaseHelper db;
-    TextView timeLineCash, timeLineCard, curView;
+    TextView timeLineCash, timeLineCard, curView,total;
     Button previous, next;
     long weekChanger = 0;
     long monthChanger = 0;
@@ -58,6 +58,7 @@ public class TimelineFragment extends Fragment {
         timeLineCash = v.findViewById(R.id.timeLineCash);
         timeLineCard = v.findViewById(R.id.timeLineCard);
         curView = v.findViewById(R.id.curView);
+        total = v.findViewById(R.id.total);
 
         curView.setText("All records");
         allViewRecordsON();
@@ -69,6 +70,7 @@ public class TimelineFragment extends Fragment {
         if (allViewRecordsON()) {
             timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
             timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
+            total.setText("TOTAL: " + String.valueOf(db.sumOfAllCash()+db.sumOfAllCard()));
 
             daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
@@ -93,6 +95,7 @@ public class TimelineFragment extends Fragment {
                                     daysArrayAdapter.notifyDataSetChanged();
                                     timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
                                     timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
+                                    total.setText("TOTAL: " + String.valueOf(db.sumOfAllCash()+db.sumOfAllCard()));
                                 }
 
                             });
@@ -135,6 +138,7 @@ public class TimelineFragment extends Fragment {
                 weekViewRecordsOn();
                 timeLineCash.setText(String.valueOf(db.sumOfAllWeekCash()));
                 timeLineCard.setText(String.valueOf(db.sumOfAllWeekCard()));
+                total.setText(String.valueOf(db.sumOfAllWeekCash()+db.sumOfAllWeekCard()));
 
                 int weekNumber = ld.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
                 LocalDate firstDayOfWeek = LocalDate.now()
@@ -171,6 +175,8 @@ public class TimelineFragment extends Fragment {
                                         daysArrayAdapter.notifyDataSetChanged();
                                         timeLineCash.setText(String.valueOf(db.sumOfAllWeekCash()));
                                         timeLineCard.setText(String.valueOf(db.sumOfAllWeekCard()));
+                                        total.setText(String.valueOf(db.sumOfAllWeekCash()+db.sumOfAllWeekCard()));
+
                                     }
 
                                 });
@@ -209,6 +215,7 @@ public class TimelineFragment extends Fragment {
                 monthViewRecordsON();
                 timeLineCash.setText(String.valueOf(db.sumOfAllMonthCash()));
                 timeLineCard.setText(String.valueOf(db.sumOfAllMonthCard()));
+                total.setText(String.valueOf(db.sumOfAllMonthCash()+db.sumOfAllMonthCard()));
 
 
                 final String monthDate = ld.getMonth() + " " + ld.getYear();
@@ -237,6 +244,7 @@ public class TimelineFragment extends Fragment {
                                         daysArrayAdapter.notifyDataSetChanged();
                                         timeLineCash.setText(String.valueOf(db.sumOfAllMonthCash()));
                                         timeLineCard.setText(String.valueOf(db.sumOfAllMonthCard()));
+                                        total.setText(String.valueOf(db.sumOfAllMonthCash()+db.sumOfAllMonthCard()));
                                     }
 
                                 });
@@ -277,6 +285,7 @@ public class TimelineFragment extends Fragment {
                 allViewRecordsON();
                 timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
                 timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
+                total.setText("TOTAL: " + String.valueOf(db.sumOfAllCash()+db.sumOfAllCard()));
 
                 daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
@@ -301,6 +310,7 @@ public class TimelineFragment extends Fragment {
                                         daysArrayAdapter.notifyDataSetChanged();
                                         timeLineCash.setText(String.valueOf(db.sumOfAllCash()));
                                         timeLineCard.setText(String.valueOf(db.sumOfAllCard()));
+                                        total.setText("TOTAL: " + String.valueOf(db.sumOfAllCash()+db.sumOfAllCard()));
 
                                     }
 
@@ -385,6 +395,7 @@ return true;
             curView.setText(monthDate);
             timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextMonthCash(newDate)));
             timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextMonthCard(newDate)));
+            total.setText(String.valueOf(db.sumOfAllPreviousNextMonthCash(newDate)+db.sumOfAllPreviousNextMonthCard(newDate)));
 
 
             daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -410,6 +421,7 @@ return true;
                                     daysArrayAdapter.notifyDataSetChanged();
                                     timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextMonthCash(newDate)));
                                     timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextMonthCard(newDate)));
+                                    total.setText(String.valueOf(db.sumOfAllPreviousNextMonthCash(newDate)+db.sumOfAllPreviousNextMonthCard(newDate)));
 
                                 }
 
@@ -436,6 +448,7 @@ return true;
             curView.setText(monthDate);
             timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextMonthCash(newDate)));
             timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextMonthCard(newDate)));
+            total.setText(String.valueOf(db.sumOfAllPreviousNextMonthCash(newDate)+db.sumOfAllPreviousNextMonthCard(newDate)));
 
             daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
@@ -460,6 +473,8 @@ return true;
                                     daysArrayAdapter.notifyDataSetChanged();
                                     timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextMonthCash(newDate)));
                                     timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextMonthCard(newDate)));
+                                    total.setText(String.valueOf(db.sumOfAllPreviousNextMonthCash(newDate)+db.sumOfAllPreviousNextMonthCard(newDate)));
+
 
                                 }
 
@@ -516,6 +531,7 @@ return true;
                                     daysArrayAdapter.notifyDataSetChanged();
                                     timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(firstDayOfWeek,lastDayOfWeek)));
                                     timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(firstDayOfWeek,lastDayOfWeek)));
+                                    total.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(firstDayOfWeek,lastDayOfWeek)+db.sumOfAllPreviousNextWeekCard(firstDayOfWeek,lastDayOfWeek)));
 
                                 }
 
@@ -531,6 +547,8 @@ return true;
             curView.setText(firstAndLastDayOfWeek);
             timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(firstDayOfWeek,lastDayOfWeek)));
             timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(firstDayOfWeek,lastDayOfWeek)));
+            total.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(firstDayOfWeek,lastDayOfWeek)+db.sumOfAllPreviousNextWeekCard(firstDayOfWeek,lastDayOfWeek)));
+
 
 
         } else if (weekChange < 0) {
@@ -572,6 +590,7 @@ return true;
                                     daysArrayAdapter.notifyDataSetChanged();
                                     timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(firstDayOfWeek,lastDayOfWeek)));
                                     timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(firstDayOfWeek,lastDayOfWeek)));
+                                    total.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(firstDayOfWeek,lastDayOfWeek)+db.sumOfAllPreviousNextWeekCard(firstDayOfWeek,lastDayOfWeek)));
 
                                 }
 
@@ -588,6 +607,7 @@ return true;
             curView.setText(firstAndLastDayOfWeek);
             timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(firstDayOfWeek,lastDayOfWeek)));
             timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextWeekCard(firstDayOfWeek,lastDayOfWeek)));
+            total.setText(String.valueOf(db.sumOfAllPreviousNextWeekCash(firstDayOfWeek,lastDayOfWeek)+db.sumOfAllPreviousNextWeekCard(firstDayOfWeek,lastDayOfWeek)));
 
         }
 

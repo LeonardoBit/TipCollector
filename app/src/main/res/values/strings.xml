@@ -12,6 +12,29 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cash">Cash</string>
+    <string name="choose_date">Choose date</string>
+    <string name="card">Card</string>
+    <string name="sum">Sum</string>
+    <string name="hours">hours</string>
+    <string name="ok">Ok</string>
+    <string name="hours_hourly_rate">hours*hourly rate</string>
+    <string name="total">TOTAL:</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string name="average_in_chosen_days">Average in chosen days</string>
+    <string name="average">AVERAGE</string>
+
+
+    <string-array name="lists">
+        <item>Item one</item>
+        <item>Item two</item>
+        <item>Item three</item>
+    </string-array>
 </resources>

@@ -31,6 +31,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_TIP_CASH = "TIP_CASH";
     public static final String COLUMN_TIP_CARD = "TIP_CARD";
     public static final String COLUMN_TIP_SUM = "TIP_SUM";
+    public static final String COLUMN_HOURS = "HOURS";
     public static final String COLUMN_ID = "ID";
 
     public DataBaseHelper(@Nullable Context context) {
@@ -53,6 +54,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 COLUMN_TIP_CARD +
                 " INT, " +
                 COLUMN_TIP_SUM +
+                " INT, " +
+                COLUMN_HOURS +
                 " INT) ";
 
         db.execSQL(createTableStatement);
@@ -74,6 +77,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_TIP_CASH,dayModel.getCash());
         cv.put(COLUMN_TIP_CARD,dayModel.getCard());
         cv.put(COLUMN_TIP_SUM,dayModel.getSum());
+        cv.put(COLUMN_HOURS,dayModel.getHours());
 
 
         long insert = db.insert(DAYS_TABLE,null,cv);
@@ -119,10 +123,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int tipCash = cursor.getInt(3);
                 int tipCard = cursor.getInt(4);
                 int tipSum = cursor.getInt(5);
+                float hours = cursor.getFloat(6);
 
 
 
-                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum);
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours);
                 returnList.add(newDay);
 
             }while (cursor.moveToNext());
@@ -195,11 +200,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int tipCash = cursor.getInt(3);
                 int tipCard = cursor.getInt(4);
                 int tipSum = cursor.getInt(5);
+                float hours = cursor.getFloat(6);
 
 
 
 
-                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum);
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours);
                 returnList.add(newDay);
 
             }while (cursor.moveToNext());
@@ -238,11 +244,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int tipCash = cursor.getInt(3);
                 int tipCard = cursor.getInt(4);
                 int tipSum = cursor.getInt(5);
+                float hours = cursor.getFloat(6);
 
 
 
 
-                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum);
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours);
                 returnList.add(newDay);
 
             }while (cursor.moveToNext());
@@ -280,11 +287,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int tipCash = cursor.getInt(3);
                 int tipCard = cursor.getInt(4);
                 int tipSum = cursor.getInt(5);
+                float hours = cursor.getFloat(6);
 
 
 
 
-                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum);
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours);
                 returnList.add(newDay);
 
             }while (cursor.moveToNext());
@@ -406,11 +414,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int tipCash = cursor.getInt(3);
                 int tipCard = cursor.getInt(4);
                 int tipSum = cursor.getInt(5);
+                float hours = cursor.getFloat(6);
 
 
 
 
-                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum);
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours);
                 returnList.add(newDay);
 
             }while (cursor.moveToNext());
@@ -461,11 +470,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int tipCash = cursor.getInt(3);
                 int tipCard = cursor.getInt(4);
                 int tipSum = cursor.getInt(5);
+                float hours = cursor.getFloat(6);
 
 
 
 
-                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum);
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours);
                 returnList.add(newDay);
 
             }while (cursor.moveToNext());
@@ -513,11 +523,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int tipCash = cursor.getInt(3);
                 int tipCard = cursor.getInt(4);
                 int tipSum = cursor.getInt(5);
+                float hours = cursor.getFloat(6);
 
 
 
 
-                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum);
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours);
                 returnList.add(newDay);
 
             }while (cursor.moveToNext());
@@ -653,7 +664,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public int sumOfAllMondaysTips() {
+   /* public int sumOfAllMondaysTips() {
         int sumOfAllCash = 0;
 
         String queryString = " SELECT AVG( TIP_SUM ) AS AverageTip " +
@@ -669,7 +680,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
         return sumOfAllCash;
-    }
+    }*/
 
 
 

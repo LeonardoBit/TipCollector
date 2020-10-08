@@ -50,7 +50,7 @@ public class AddDayFragment extends Fragment {
     String selectedDate;
 
     //EditTexts
-    EditText tipCash,tipCard;
+    EditText tipCash,tipCard,hours;
 
     //Buttons
     Button btnOk;
@@ -144,6 +144,7 @@ public class AddDayFragment extends Fragment {
         tipCard = v.findViewById(R.id.tipCard);
         tipSum = v.findViewById(R.id.tipSum);
         btnOk = v.findViewById(R.id.btnOk);
+        hours = v.findViewById(R.id.hours);
         final FragmentManager fm = getActivity().getSupportFragmentManager();
 
 
@@ -175,8 +176,15 @@ public class AddDayFragment extends Fragment {
 
                     Toast.makeText(getActivity(),"Please choose date",Toast.LENGTH_SHORT).show();
 
-                }
-                else if (!TextUtils.isEmpty(mDisplayDate.getText().toString())){
+                } else if (TextUtils.isEmpty(hours.getText().toString())){
+
+                    Toast.makeText(getActivity(),"Please enter hours of work ",Toast.LENGTH_SHORT).show();
+
+                }else if (Float.parseFloat(hours.getText().toString())>24){
+
+                    Toast.makeText(getActivity(),"This is to many ours to work ",Toast.LENGTH_SHORT).show();
+
+                }else if (!TextUtils.isEmpty(mDisplayDate.getText().toString())){
                     if (TextUtils.isEmpty(tipCash.getText().toString()) && TextUtils.isEmpty(tipCard.getText().toString())){
 
                         Toast.makeText(getActivity(),"Day not added empty input",Toast.LENGTH_SHORT).show();
@@ -196,10 +204,11 @@ public class AddDayFragment extends Fragment {
                         Date date = Date.valueOf(String.valueOf(mDate));
 
 
-                        dayModel = new DayModel(0, date, weekNumber(),
+                        dayModel =new DayModel(0, date, weekNumber(),
                                 Integer.parseInt(tipCash.getText().toString()),
                                 Integer.parseInt(tipCard.getText().toString()),
-                                Integer.parseInt(tipSum.getText().toString()));
+                                Integer.parseInt(tipSum.getText().toString()),
+                                Float.parseFloat(hours.getText().toString()));
 
                         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
                         dataBaseHelper.addOneDay(dayModel);
@@ -217,7 +226,8 @@ public class AddDayFragment extends Fragment {
                         dayModel = new DayModel(0, date, weekNumber(),
                                 Integer.parseInt(tipCash.getText().toString()),
                                 Integer.parseInt(tipCard.getText().toString()),
-                                Integer.parseInt(tipSum.getText().toString()));
+                                Integer.parseInt(tipSum.getText().toString()),
+                                Float.parseFloat(hours.getText().toString()));
 
                         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
                         dataBaseHelper.addOneDay(dayModel);

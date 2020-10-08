@@ -21,45 +21,45 @@
         android:id="@+id/checkBox2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tuesday" />
+        android:text="@string/tuesday" />
     <CheckBox
         android:id="@+id/checkBox3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Wednesday" />
+        android:text="@string/wednesday" />
     <CheckBox
         android:id="@+id/checkBox4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Thursday" />
+        android:text="@string/thursday" />
     <CheckBox
         android:id="@+id/checkBox5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Friday" />
+        android:text="@string/friday" />
     <CheckBox
         android:id="@+id/checkBox6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Saturday" />
+        android:text="@string/saturday" />
     <CheckBox
         android:id="@+id/checkBox7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sunday" />
+        android:text="@string/sunday" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Average in chosen days"
+        android:text="@string/average_in_chosen_days"
         android:gravity="center"/>
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:text="AVERAGE"
+        android:text="@string/average"
         android:gravity="center"
         android:textSize="40sp"/>
 </LinearLayout>

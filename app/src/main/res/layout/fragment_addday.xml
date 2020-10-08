@@ -4,14 +4,14 @@
 
     <EditText
         android:id="@+id/tipCash"
-        android:layout_width="300dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="65dp"
         android:ems="10"
         android:gravity="center"
-        android:hint="Cash"
+        android:hint="@string/cash"
         android:inputType="number" />
 
     <TextView
@@ -21,21 +21,21 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="152dp"
-        android:layout_marginTop="59dp"
+        android:layout_marginStart="154dp"
+        android:layout_marginTop="25dp"
         android:gravity="center"
-        android:hint="Choose date" />
+        android:hint="@string/choose_date" />
 
     <EditText
         android:id="@+id/tipCard"
-        android:layout_width="300dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="164dp"
+        android:layout_marginTop="125dp"
         android:ems="10"
         android:gravity="center"
-        android:hint="Card"
+        android:hint="@string/card"
         android:inputType="number" />
 
     <TextView
@@ -43,12 +43,26 @@
         android:layout_width="115dp"
         android:layout_height="38dp"
         android:layout_alignStart="@+id/tipCard"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="94dp"
-        android:layout_marginTop="239dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="99dp"
+        android:layout_marginEnd="46dp"
         android:gravity="center"
-        android:hint="Sum" />
+        android:hint="@string/sum" />
+
+    <EditText
+        android:id="@+id/hours"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="185dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/hours"
+        android:inputType="numberDecimal" />
 
     <Button
         android:id="@+id/btnOk"
@@ -58,5 +72,16 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="291dp"
-        android:text="Ok" />
+        android:text="@string/ok" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="115dp"
+        android:layout_height="38dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="189dp"
+        android:layout_marginEnd="46dp"
+        android:gravity="center"
+        android:text="@string/hours_hourly_rate" />
 </RelativeLayout>
