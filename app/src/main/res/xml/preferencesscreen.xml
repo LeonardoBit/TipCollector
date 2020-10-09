@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <EditTextPreference
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:key="hourly_rate"
+        android:selectAllOnFocus="true"
+        android:singleLine="false"
+        android:title="Enter you hourly rate"
+        android:summary="hours_hourly_rate"
+        />
+</PreferenceScreen>
