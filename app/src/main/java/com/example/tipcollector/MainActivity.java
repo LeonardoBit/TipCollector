@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
 
 
 import android.content.Intent;
@@ -58,6 +59,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_mainPage);
 
         }
+
+
+        PreferenceManager.setDefaultValues(this,R.xml.preferencesscreen,false);
+
+
+
+
+
+
+
+
+
+
+
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
