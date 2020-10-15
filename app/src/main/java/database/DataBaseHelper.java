@@ -27,11 +27,12 @@ import java.util.List;
 public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String DAYS_TABLE = "DAYS_TABLE";
     public static final String COLUMN_DAY_DATE = "DAY_DATE";
-    public static String COLUMN_WEEK = "WEEK_YEAR";
+    public static String COLUMN_WEEK = "WEEK_DATE";
     public static final String COLUMN_TIP_CASH = "TIP_CASH";
     public static final String COLUMN_TIP_CARD = "TIP_CARD";
     public static final String COLUMN_TIP_SUM = "TIP_SUM";
     public static final String COLUMN_HOURS = "HOURS";
+    public static String COLUMN_HOURS_BY_RATE = "HOURS_BY_RATE";
     public static final String COLUMN_ID = "ID";
 
     public DataBaseHelper(@Nullable Context context) {
@@ -56,6 +57,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 COLUMN_TIP_SUM +
                 " INT, " +
                 COLUMN_HOURS +
+                " INT, "+
+                COLUMN_HOURS_BY_RATE +
                 " INT) ";
 
         db.execSQL(createTableStatement);
@@ -73,11 +76,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
         cv.put(COLUMN_DAY_DATE, String.valueOf(dayModel.getDayDate()));
-        cv.put(COLUMN_WEEK, dayModel.getWeekOfYear());
+        cv.put(COLUMN_WEEK,dayModel.getWeek());
         cv.put(COLUMN_TIP_CASH,dayModel.getCash());
         cv.put(COLUMN_TIP_CARD,dayModel.getCard());
         cv.put(COLUMN_TIP_SUM,dayModel.getSum());
         cv.put(COLUMN_HOURS,dayModel.getHours());
+        cv.put(COLUMN_HOURS_BY_RATE, dayModel.getHoursByRate());
 
 
         long insert = db.insert(DAYS_TABLE,null,cv);
@@ -124,10 +128,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int tipCard = cursor.getInt(4);
                 int tipSum = cursor.getInt(5);
                 float hours = cursor.getFloat(6);
+                float hoursByRate = cursor.getInt(7);
 
 
 
-                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours);
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours,hoursByRate);
                 returnList.add(newDay);
 
             }while (cursor.moveToNext());
@@ -201,11 +206,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int tipCard = cursor.getInt(4);
                 int tipSum = cursor.getInt(5);
                 float hours = cursor.getFloat(6);
+                float hoursByRate = cursor.getInt(7);
 
 
 
-
-                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours);
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours,hoursByRate);
                 returnList.add(newDay);
 
             }while (cursor.moveToNext());
@@ -245,11 +250,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int tipCard = cursor.getInt(4);
                 int tipSum = cursor.getInt(5);
                 float hours = cursor.getFloat(6);
+                float hoursByRate = cursor.getInt(7);
 
 
 
-
-                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours);
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours,hoursByRate);
                 returnList.add(newDay);
 
             }while (cursor.moveToNext());
@@ -288,11 +293,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int tipCard = cursor.getInt(4);
                 int tipSum = cursor.getInt(5);
                 float hours = cursor.getFloat(6);
+                float hoursByRate = cursor.getInt(7);
 
 
 
-
-                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours);
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours,hoursByRate);
                 returnList.add(newDay);
 
             }while (cursor.moveToNext());
@@ -415,11 +420,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int tipCard = cursor.getInt(4);
                 int tipSum = cursor.getInt(5);
                 float hours = cursor.getFloat(6);
+                float hoursByRate = cursor.getInt(7);
 
 
 
-
-                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours);
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours,hoursByRate);
                 returnList.add(newDay);
 
             }while (cursor.moveToNext());
@@ -471,11 +476,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int tipCard = cursor.getInt(4);
                 int tipSum = cursor.getInt(5);
                 float hours = cursor.getFloat(6);
+                float hoursByRate = cursor.getInt(7);
 
 
 
-
-                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours);
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours,hoursByRate);
                 returnList.add(newDay);
 
             }while (cursor.moveToNext());
@@ -524,11 +529,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int tipCard = cursor.getInt(4);
                 int tipSum = cursor.getInt(5);
                 float hours = cursor.getFloat(6);
+                float hoursByRate = cursor.getInt(7);
 
 
 
-
-                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours);
+                DayModel newDay = new DayModel(dayId,dayDate,week,tipCash,tipCard,tipSum,hours,hoursByRate);
                 returnList.add(newDay);
 
             }while (cursor.moveToNext());
@@ -664,23 +669,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-   /* public int sumOfAllMondaysTips() {
-        int sumOfAllCash = 0;
 
-        String queryString = " SELECT AVG( TIP_SUM ) AS AverageTip " +
-                " FROM " + DAYS_TABLE +
-                " WHERE "+ COLUMN_DAY_DATE+
-                " BETWEEN " +"'"+ firstDayOfWeek+"'" +
-                " AND " +"'"+ lastDayOfWeek+"'";
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(queryString, null);
-        if (cursor.moveToFirst())
-            sumOfAllCash = cursor.getInt(cursor.getColumnIndex("totalCash"));
-
-
-        return sumOfAllCash;
-    }*/
 
 
 

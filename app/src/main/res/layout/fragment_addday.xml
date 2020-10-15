@@ -40,17 +40,28 @@
 
     <TextView
         android:id="@+id/tipSum"
-        android:layout_width="115dp"
-        android:layout_height="38dp"
+        android:layout_width="162dp"
+        android:layout_height="75dp"
         android:layout_alignStart="@+id/tipCard"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="250dp"
-        android:layout_marginTop="99dp"
-        android:layout_marginEnd="46dp"
+        android:layout_marginStart="234dp"
+        android:layout_marginTop="82dp"
+        android:layout_marginEnd="15dp"
         android:gravity="center"
         android:hint="@string/sum" />
+
+    <TextView
+        android:id="@+id/hoursValue"
+        android:layout_width="136dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="185dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="center"
+        android:hint="Your our rate" />
 
     <EditText
         android:id="@+id/hours"
@@ -68,20 +79,9 @@
         android:id="@+id/btnOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="291dp"
         android:text="@string/ok" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="115dp"
-        android:layout_height="38dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="189dp"
-        android:layout_marginEnd="46dp"
-        android:gravity="center"
-        android:text="@string/hours_hourly_rate" />
 </RelativeLayout>

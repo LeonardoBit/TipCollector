@@ -5,25 +5,27 @@ import java.sql.Date;
 public class DayModel {
     private int id;
     private Date dayDate;
-    private int weekOfYear;
+    private int week;
     private int cash;
     private int card;
     private int sum;
     private float hours;
+    private float hoursByRate;
 
 
 
     //constructors
 
 
-    public DayModel(int id, Date dayDate, int weekOfYear, int cash, int card, int sum, float hours) {
+    public DayModel(int id, Date dayDate,int week, int cash, int card, int sum, float hours, float hoursByRate) {
         this.id = id;
         this.dayDate = dayDate;
-        this.weekOfYear = weekOfYear;
+        this.week = week;
         this.cash = cash;
         this.card = card;
         this.sum = sum;
         this.hours = hours;
+        this.hoursByRate = hoursByRate;
     }
 
     @Override
@@ -34,12 +36,20 @@ public class DayModel {
                 " hours=" + hours ;
     }
 
-    public int getWeekOfYear() {
-        return weekOfYear;
+    public int getWeek() {
+        return week;
     }
 
-    public void setWeekOfYear(int weekOfYear) {
-        this.weekOfYear = weekOfYear;
+    public void setWeek(int week) {
+        this.week = week;
+    }
+
+    public float getHoursByRate() {
+        return hoursByRate;
+    }
+
+    public void setHoursByRate(float hoursByRate) {
+        this.hoursByRate = hoursByRate;
     }
 
     public int getId() {

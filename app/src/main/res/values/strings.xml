@@ -4,23 +4,22 @@
     <string name="timeline">Timeline</string>
     <string name="main_page">Main page</string>
     <string name="sort">Sort</string>
-    <string name="old_first">Old first</string>
-    <string name="new_first">New first</string>
+
     <string name="communicate">Communicate</string>
     <string name="share">Share</string>
     <string name="settings">Settings</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="cash">Cash</string>
     <string name="choose_date">Choose date</string>
     <string name="card">Card</string>
     <string name="sum">Sum</string>
     <string name="hours">hours</string>
-    <string name="ok">Ok</string>
-    <string name="hours_hourly_rate">hours*hourly rate</string>
+    <string name="ok" translatable="false">Ok</string>
+
     <string name="total">TOTAL:</string>
     <string name="tuesday">Tuesday</string>
     <string name="wednesday">Wednesday</string>
@@ -35,13 +34,14 @@
     <string name="your_hourly_rate">Your hourly rate</string>
     <string name="settings_general_hourly_rate">Please choose your hourly rate</string>
     <string name="select_language">Select language</string>
-    <string name="language_default_value">English</string>
+    <string name="language_default_value" translatable="false">English</string>
     <string name="settings_interface_language">Language</string>
     <string name="clear_all_database">Clear ALL data</string>
     <string name="clear_all_data_message">"This will clear your data "</string>
     <string name="setting_general">GENERAL</string>
     <string name="settings_interface">INTERFACE</string>
     <string name="data_settings">Data settings</string>
+    <string name="monday">Monday</string>
 
 
     <string-array name="languages">

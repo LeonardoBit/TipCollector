@@ -19,15 +19,6 @@
         android:icon="@drawable/ic_business_center_black_24dp"
         />
     <PreferenceCategory
-        android:title="@string/settings_interface"/>
-    <ListPreference
-        android:entryValues="@array/languages"
-        android:entries="@array/languages"
-        android:title="@string/select_language"
-        app:key="language_key"
-        android:icon="@drawable/ic_language_black_24dp"
-        android:defaultValue="English"/>
-    <PreferenceCategory
         android:title="@string/data_settings"/>
     <Preference
         android:title="@string/clear_all_database"

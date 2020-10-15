@@ -3,6 +3,7 @@ package AddDay;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,11 +24,13 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
 
 
 import database.DataBaseHelper;
 import com.example.tipcollector.DayModel;
 import PageMain.MainPageFragment;
+
 import com.example.tipcollector.R;
 
 import java.sql.Date;
@@ -40,11 +43,10 @@ import java.util.Locale;
 public class AddDayFragment extends Fragment {
 
 
-
     //DATABASE
 
     //TextViews
-    TextView mDisplayDate,tipSum;
+    TextView mDisplayDate,tipSum,hoursValue;
 
     //Strings
     String selectedDate;
@@ -74,12 +76,53 @@ public class AddDayFragment extends Fragment {
 
                             int cashValue = TextUtils.isEmpty(tipCash.getText()) ? 0 : Integer.parseInt(tipCash.getText().toString().trim());
                             int cardValue = TextUtils.isEmpty(tipCard.getText()) ? 0 : Integer.parseInt(tipCard.getText().toString().trim());
-                            int sumValue = cashValue + cardValue;
+
+                            int sumValue = cashValue + cardValue ;
                             tipSum.setText(String.valueOf(sumValue));
+
+
+
+
                 } else {
                     tipSum.setText("sum");
+
                 }
             }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+    TextWatcher hoursCalculator = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            if(!TextUtils.isEmpty(hours.getText().toString())){
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String hourRatePref = sharedPref.getString("hourly_rate_key","");
+                if(TextUtils.isEmpty(hourRatePref)){
+                    Toast.makeText(getActivity(),"Please choose your hour rate in settings ",Toast.LENGTH_SHORT).show();
+                }else{
+                    float hourRate = Float.parseFloat(hourRatePref);
+                    float hValue = Float.parseFloat(hours.getText().toString()) * hourRate;
+
+                    hoursValue.setText(String.valueOf(hValue));}
+
+
+            }else {
+                hours.setHint("Hours");
+            }
+
+
+
+
+        }
 
         @Override
         public void afterTextChanged(Editable s) {
@@ -135,16 +178,23 @@ public class AddDayFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_addday,container,false);
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        final String hourRate = sharedPref.getString("hourly_rate_key","");
+        String currency = sharedPref.getString("currencies","");
+
 
 
 
         // id declarations
+        hoursValue = v.findViewById(R.id.hoursValue);
         mDisplayDate= v.findViewById(R.id.mDisplayDate);
         tipCash = v.findViewById(R.id.tipCash);
         tipCard = v.findViewById(R.id.tipCard);
         tipSum = v.findViewById(R.id.tipSum);
         btnOk = v.findViewById(R.id.btnOk);
         hours = v.findViewById(R.id.hours);
+
         final FragmentManager fm = getActivity().getSupportFragmentManager();
 
 
@@ -160,6 +210,10 @@ public class AddDayFragment extends Fragment {
         });
             tipCash.addTextChangedListener(sumCalculator);
             tipCard.addTextChangedListener(sumCalculator);
+            hours.addTextChangedListener(hoursCalculator);
+
+
+
 
 
 
@@ -180,9 +234,13 @@ public class AddDayFragment extends Fragment {
 
                     Toast.makeText(getActivity(),"Please enter hours of work ",Toast.LENGTH_SHORT).show();
 
-                }else if (Float.parseFloat(hours.getText().toString())>24){
+                }else if (TextUtils.isEmpty(hours.getText().toString())){
 
-                    Toast.makeText(getActivity(),"This is to many ours to work ",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"Please enter hours of work ",Toast.LENGTH_SHORT).show();
+
+                }else if (TextUtils.isEmpty(hourRate)){
+
+                    Toast.makeText(getActivity(),"Please choose your hour rate in settings ",Toast.LENGTH_SHORT).show();
 
                 }else if (!TextUtils.isEmpty(mDisplayDate.getText().toString())){
                     if (TextUtils.isEmpty(tipCash.getText().toString()) && TextUtils.isEmpty(tipCard.getText().toString())){
@@ -204,11 +262,12 @@ public class AddDayFragment extends Fragment {
                         Date date = Date.valueOf(String.valueOf(mDate));
 
 
-                        dayModel =new DayModel(0, date, weekNumber(),
+                        dayModel = new DayModel(0, date, weekNumber(),
                                 Integer.parseInt(tipCash.getText().toString()),
                                 Integer.parseInt(tipCard.getText().toString()),
                                 Integer.parseInt(tipSum.getText().toString()),
-                                Float.parseFloat(hours.getText().toString()));
+                                Float.parseFloat(hours.getText().toString()),
+                                Float.parseFloat(hoursValue.getText().toString()));
 
                         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
                         dataBaseHelper.addOneDay(dayModel);
@@ -227,7 +286,8 @@ public class AddDayFragment extends Fragment {
                                 Integer.parseInt(tipCash.getText().toString()),
                                 Integer.parseInt(tipCard.getText().toString()),
                                 Integer.parseInt(tipSum.getText().toString()),
-                                Float.parseFloat(hours.getText().toString()));
+                                Float.parseFloat(hours.getText().toString()),
+                                Float.parseFloat(hoursValue.getText().toString()));
 
                         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
                         dataBaseHelper.addOneDay(dayModel);
