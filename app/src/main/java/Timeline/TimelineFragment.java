@@ -60,7 +60,7 @@ public class TimelineFragment extends Fragment {
         curView = v.findViewById(R.id.curView);
         total = v.findViewById(R.id.total);
 
-        curView.setText("All records");
+        curView.setText(R.string.all_records);
         allViewRecordsON();
         db = new DataBaseHelper(getActivity());
         daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.getAll());

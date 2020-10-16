@@ -33,10 +33,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if(key.equals(PREF_LANGUAGE)){
-                    ListPreference languagePref = findPreference(key);
-                    languagePref.setSummary(sharedPreferences.getString(key,""));
-                }else if(key.equals(PREF_HOURLY_RATE)){
+
+                if(key.equals(PREF_HOURLY_RATE)){
                     EditTextPreference hourlyRatePref = findPreference(key);
                     hourlyRatePref.setSummary(sharedPreferences.getString(key,""));
                 }else if(key.equals(PREF_CURRENCY)){
@@ -56,8 +54,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         getPreferenceScreen().getSharedPreferences().
                 registerOnSharedPreferenceChangeListener(preferenceChangeListener);
 
-        ListPreference languagePref = findPreference(PREF_LANGUAGE);
-        languagePref.setSummary(getPreferenceScreen().getSharedPreferences().getString(PREF_LANGUAGE,""));
 
         EditTextPreference hourlyRatePref = findPreference(PREF_HOURLY_RATE);
         hourlyRatePref.setSummary(getPreferenceScreen().getSharedPreferences().getString(PREF_HOURLY_RATE,"Choose your hourly rate"));

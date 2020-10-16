@@ -3,7 +3,7 @@
     <string name="app_name">Tip Collector</string>
     <string name="analysis">Analiza</string>
     <string name="timeline">Oś czasu</string>
-    <string name="main_page">StronaGłowna</string>
+    <string name="main_page">Strona Głowna</string>
     <string name="sort">sortowanie</string>
     <string name="communicate">Komunikacja</string>
     <string name="share">"Podzielic się "</string>
@@ -34,5 +34,11 @@
     <string name="setting_general">Główne</string>
     <string name="settings_interface">Interfejs</string>
     <string name="data_settings">ustawienia danych</string>
+    <string name="hours_value">Wartość godzin</string>
+    <string name="add_day">Dodaj dzień</string>
+    <string name="all_records">"Wszystkie dni "</string>
+    <string name="week">Tydzień</string>
+    <string name="month">Miesiąc</string>
+    <string name="all">Wszystko</string>
 
 </resources>

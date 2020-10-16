@@ -42,6 +42,12 @@
     <string name="settings_interface">INTERFACE</string>
     <string name="data_settings">Data settings</string>
     <string name="monday">Monday</string>
+    <string name="hours_value">Hours value</string>
+    <string name="add_day">Add Day</string>
+    <string name="all_records">All records</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
+    <string name="all">All</string>
 
 
     <string-array name="languages">

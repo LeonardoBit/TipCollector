@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
 
     <EditText
         android:id="@+id/tipCash"
@@ -23,6 +24,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="154dp"
         android:layout_marginTop="25dp"
+        android:background="@color/design_default_color_on_primary"
         android:gravity="center"
         android:hint="@string/choose_date" />
 
@@ -61,7 +63,7 @@
         android:layout_marginTop="185dp"
         android:layout_marginEnd="30dp"
         android:gravity="center"
-        android:hint="Your our rate" />
+        android:hint="@string/hours_value" />
 
     <EditText
         android:id="@+id/hours"
