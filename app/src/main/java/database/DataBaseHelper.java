@@ -668,6 +668,145 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return sumOfAllPreviousMonthCard;
     }
 
+    public float averageOfMondays(){
+
+
+        float dayAverage = 0;
+
+        String queryString = "SELECT AVG(TIP_SUM) as average, strftime('%w', DAY_DATE )as mondays" + " FROM " + " DAYS_TABLE " + " WHERE  mondays = '1' " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+
+        if (cursor.moveToFirst())
+            dayAverage = cursor.getInt(cursor.getColumnIndex("average"));
+
+
+
+        return dayAverage;
+    }
+    public float averageOfTuesdays(){
+
+
+        float dayAverage = 0;
+
+        String queryString = "SELECT AVG(TIP_SUM) as average, strftime('%w', DAY_DATE )as tuesdays"+ " FROM " + " DAYS_TABLE " + " WHERE  tuesdays = '2' " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+
+        if (cursor.moveToFirst())
+            dayAverage = cursor.getInt(cursor.getColumnIndex("average"));
+
+
+
+        return dayAverage;
+    }
+    public float averageOfWednesdays(){
+
+
+        float dayAverage = 0;
+
+        String queryString = "SELECT AVG(TIP_SUM) as average, strftime('%w', DAY_DATE )as wednesdays"+ " FROM " + " DAYS_TABLE " + " WHERE  wednesdays = '3' " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+
+        if (cursor.moveToFirst())
+            dayAverage = cursor.getInt(cursor.getColumnIndex("average"));
+
+
+
+        return dayAverage;
+    }
+    public float averageOfThursdays(){
+
+
+       float dayAverage = 0;
+
+        String queryString = "SELECT AVG(TIP_SUM) as average, strftime('%w', DAY_DATE )as thursdays"+ " FROM " + " DAYS_TABLE " + " WHERE  thursdays = '4' " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+
+        if (cursor.moveToFirst())
+            dayAverage = cursor.getInt(cursor.getColumnIndex("average"));
+
+
+
+        return dayAverage;
+    }
+    public float averageOfFridays(){
+
+
+        float dayAverage = 0;
+
+        String queryString = "SELECT AVG(TIP_SUM) as average, strftime('%w', DAY_DATE )as fridays"+ " FROM " + " DAYS_TABLE " + " WHERE  fridays = '5' " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+
+        if (cursor.moveToFirst())
+            dayAverage = cursor.getInt(cursor.getColumnIndex("average"));
+
+
+
+        return dayAverage;
+    }
+    public float averageOfSaturdays(){
+
+
+        float dayAverage = 0;
+
+        String queryString = "SELECT AVG(TIP_SUM) as average, strftime('%w', DAY_DATE )as saturdays"+ " FROM " + " DAYS_TABLE " + " WHERE  saturdays = '6' " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+
+        if (cursor.moveToFirst())
+            dayAverage = cursor.getInt(cursor.getColumnIndex("average"));
+
+
+
+        return dayAverage;
+    }
+    public float averageOfSundays(){
+
+
+        float dayAverage = 0;
+
+        String queryString = "SELECT AVG(TIP_SUM) as average, strftime('%w', DAY_DATE )as sundays"+ " FROM " + " DAYS_TABLE " + " WHERE  sundays = '0' " ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+
+        if (cursor.moveToFirst())
+            dayAverage = cursor.getInt(cursor.getColumnIndex("average"));
+
+
+
+        return dayAverage;
+    }
+
+    public float averageOfMonth(int month){
+        float monthAverage = 0;
+
+
+        String queryString = "SELECT AVG(TIP_SUM) as average, strftime('%m', DAY_DATE )as month" + " FROM " + " DAYS_TABLE " + " WHERE  month =" + "'" +  month + "'"  ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+
+        if (cursor.moveToFirst())
+            monthAverage = cursor.getInt(cursor.getColumnIndex("month"));
+
+
+
+        return monthAverage;
+    }
+
+
+
 
 
 
