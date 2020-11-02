@@ -4,8 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="Analysis.CheckMonthDaysAverage">
-
-
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Please choose months you want to see ? " />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,59 +16,68 @@
         android:orientation="horizontal">
 
         <CheckBox
+            android:id="@+id/cbJan"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="January" />
 
         <CheckBox
+            android:id="@+id/cbFeb"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="February" />
 
         <CheckBox
+            android:id="@+id/cbMar"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="March" />
 
         <CheckBox
+            android:id="@+id/cbApr"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="April" />
 
     </LinearLayout>
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal">
 
         <CheckBox
+            android:id="@+id/cbMay"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="May" />
 
         <CheckBox
+            android:id="@+id/cbJun"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="June" />
 
         <CheckBox
+            android:id="@+id/cbJul"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="July" />
 
         <CheckBox
+            android:id="@+id/cbAug"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="August" />
 
     </LinearLayout>
@@ -77,30 +89,62 @@
         android:orientation="horizontal">
 
         <CheckBox
+            android:id="@+id/cbSep"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="September" />
 
         <CheckBox
+            android:id="@+id/cbOct"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="October" />
 
         <CheckBox
+            android:id="@+id/cbNov"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="November" />
 
         <CheckBox
+            android:id="@+id/cbDec"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="December" />
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/average_in_chosen_days" />
+
+    <TextView
+        android:id="@+id/tvAverageMon"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:text="@string/average"
+        android:textSize="40sp" />
+
+    <Button
+        android:id="@+id/btnCheckMon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Check" />
+
+
 
 </LinearLayout>
+
+
+
+
+
+

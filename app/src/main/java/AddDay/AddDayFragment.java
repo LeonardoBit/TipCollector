@@ -74,14 +74,21 @@ public class AddDayFragment extends Fragment {
 
                 if (!TextUtils.isEmpty(tipCash.getText().toString().trim()) || !TextUtils.isEmpty(tipCard.getText().toString().trim())) {
 
-                            int cashValue = TextUtils.isEmpty(tipCash.getText()) ? 0 : Integer.parseInt(tipCash.getText().toString().trim());
-                            int cardValue = TextUtils.isEmpty(tipCard.getText()) ? 0 : Integer.parseInt(tipCard.getText().toString().trim());
 
-                            int sumValue = cashValue + cardValue ;
-                            tipSum.setText(String.valueOf(sumValue));
+                                int cashValue = TextUtils.isEmpty(tipCash.getText()) ? 0 : Integer.parseInt(tipCash.getText().toString().trim());
+                                int cardValue = TextUtils.isEmpty(tipCard.getText()) ? 0 : Integer.parseInt(tipCard.getText().toString().trim());
 
+                                        if(cashValue>999999){
+                                            tipCash.setText("999999");
+                                        }else if(cardValue>999999){
+                                            tipCard.setText("999999");
+                                        }
 
+                                        cashValue = TextUtils.isEmpty(tipCash.getText()) ? 0 : Integer.parseInt(tipCash.getText().toString().trim());
+                                        cardValue = TextUtils.isEmpty(tipCard.getText()) ? 0 : Integer.parseInt(tipCard.getText().toString().trim());
 
+                                int sumValue = cashValue + cardValue ;
+                                tipSum.setText(String.valueOf(sumValue));
 
                 } else {
                     tipSum.setText("sum");
@@ -109,10 +116,16 @@ public class AddDayFragment extends Fragment {
                 if(TextUtils.isEmpty(hourRatePref)){
                     Toast.makeText(getActivity(),"Please choose your hour rate in settings ",Toast.LENGTH_SHORT).show();
                 }else{
-                    float hourRate = Float.parseFloat(hourRatePref);
-                    float hValue = Float.parseFloat(hours.getText().toString()) * hourRate;
+                    if(Float.parseFloat(hours.getText().toString())>24){
 
-                    hoursValue.setText(String.valueOf(hValue));}
+                        hours.setText("24");
+                    }else{
+                        float hourRate = Float.parseFloat(hourRatePref);
+                        float hValue = Float.parseFloat(hours.getText().toString()) * hourRate;
+
+                        hoursValue.setText(String.valueOf(hValue));
+                    }
+                }
 
 
             }else {
@@ -234,18 +247,40 @@ public class AddDayFragment extends Fragment {
 
                     Toast.makeText(getActivity(),"Please enter hours of work ",Toast.LENGTH_SHORT).show();
 
-                }else if (TextUtils.isEmpty(hours.getText().toString())){
-
-                    Toast.makeText(getActivity(),"Please enter hours of work ",Toast.LENGTH_SHORT).show();
-
                 }else if (TextUtils.isEmpty(hourRate)){
 
                     Toast.makeText(getActivity(),"Please choose your hour rate in settings ",Toast.LENGTH_SHORT).show();
 
                 }else if (!TextUtils.isEmpty(mDisplayDate.getText().toString())){
-                    if (TextUtils.isEmpty(tipCash.getText().toString()) && TextUtils.isEmpty(tipCard.getText().toString())){
+                     if (!TextUtils.isEmpty(hours.getText().toString()) && (TextUtils.isEmpty(tipCash.getText().toString()) && TextUtils.isEmpty(tipCard.getText().toString()))){
+                         if(Float.parseFloat(hours.getText().toString())>24) {
+                             Toast.makeText(getActivity(),"Day have only 24 hours",Toast.LENGTH_SHORT).show();
+                         }
+                         else {
+                             int cashValue = TextUtils.isEmpty(tipCash.getText()) ? 0 : Integer.parseInt(tipCash.getText().toString().trim());
+                             int cardValue = TextUtils.isEmpty(tipCard.getText()) ? 0 : Integer.parseInt(tipCard.getText().toString().trim());
+                             tipCash.setText(String.valueOf(cashValue));
+                             tipCard.setText(String.valueOf(cardValue));
 
-                        Toast.makeText(getActivity(),"Day not added empty input",Toast.LENGTH_SHORT).show();
+                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+                             String test = mDisplayDate.getText().toString();
+
+                             LocalDate mDate = LocalDate.parse(test, formatter);
+                             Date date = Date.valueOf(String.valueOf(mDate));
+
+                             dayModel = new DayModel(0, date, weekNumber(),
+                                     Integer.parseInt(tipCash.getText().toString()),
+                                     Integer.parseInt(tipCard.getText().toString()),
+                                     Integer.parseInt(tipSum.getText().toString()),
+                                     Float.parseFloat(hours.getText().toString()),
+                                     Float.parseFloat(hoursValue.getText().toString()));
+
+                             DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
+                             dataBaseHelper.addOneDay(dayModel);
+                             Toast.makeText(getActivity(), "Day added", Toast.LENGTH_SHORT).show();
+                             Transaction();}
+
+
 
                     } else if(TextUtils.isEmpty(tipCash.getText().toString()) || TextUtils.isEmpty(tipCard.getText().toString())){
 

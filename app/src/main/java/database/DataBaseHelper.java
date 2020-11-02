@@ -107,6 +107,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
+
     public List<DayModel> getAll(){
         List<DayModel> returnList = new ArrayList<>();
         //get data from the database
@@ -788,17 +789,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return dayAverage;
     }
 
-    public float averageOfMonth(int month){
+    public float averageOfMonth(int monthNum){
         float monthAverage = 0;
 
 
-        String queryString = "SELECT AVG(TIP_SUM) as average, strftime('%m', DAY_DATE )as month" + " FROM " + " DAYS_TABLE " + " WHERE  month =" + "'" +  month + "'"  ;
+        String queryString = "SELECT AVG(TIP_SUM) as average, strftime('%m', DAY_DATE )as month" + " FROM " + " DAYS_TABLE " + " WHERE (month+0) = " +monthNum ;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString,null);
 
         if (cursor.moveToFirst())
-            monthAverage = cursor.getInt(cursor.getColumnIndex("month"));
+            monthAverage = cursor.getInt(cursor.getColumnIndex("average"));
 
 
 

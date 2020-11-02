@@ -20,6 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
 import com.example.tipcollector.R;
@@ -27,8 +28,10 @@ import com.example.tipcollector.R;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.TextStyle;
 import java.time.temporal.IsoFields;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Locale;
 
 import database.DataBaseHelper;
 import com.example.tipcollector.DayModel;
@@ -217,8 +220,8 @@ public class TimelineFragment extends Fragment {
                 timeLineCard.setText(String.valueOf(db.sumOfAllMonthCard()));
                 total.setText(String.valueOf(db.sumOfAllMonthCash()+db.sumOfAllMonthCard()));
 
-
-                final String monthDate = ld.getMonth() + " " + ld.getYear();
+                String month = ld.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
+                final String monthDate = month + " " + ld.getYear();
                 curView.setText(monthDate);
 
                 daysList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -391,7 +394,8 @@ return true;
             final LocalDate newDate = ld.plusMonths(monthChanger);
             daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.previousMonth(newDate));
             daysList.setAdapter(daysArrayAdapter);
-            String monthDate = newDate.getMonth() + " " + newDate.getYear();
+            String month = newDate.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault());
+            String monthDate = month + " " + newDate.getYear();
             curView.setText(monthDate);
             timeLineCash.setText(String.valueOf(db.sumOfAllPreviousNextMonthCash(newDate)));
             timeLineCard.setText(String.valueOf(db.sumOfAllPreviousNextMonthCard(newDate)));
@@ -440,8 +444,8 @@ return true;
             monthChange = Math.abs(monthChange);
 
             final LocalDate newDate = ld.minusMonths(monthChange);
-
-            String monthDate = newDate.getMonth() + " " + newDate.getYear();
+            String month = newDate.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault());
+            String monthDate = month + " " + newDate.getYear();
 
             daysArrayAdapter = new ArrayAdapter<DayModel>(getActivity(), android.R.layout.simple_list_item_1, db.nextMonth(newDate));
             daysList.setAdapter(daysArrayAdapter);

@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
     >
-
         <item
-            android:id="@+id/week_view"
-            android:title="@string/week" />
-        <item
-            android:id="@+id/month_view"
-            android:title="@string/month" />
-        <item
-            android:id="@+id/all_view"
-            android:title="@string/all"/>
+            android:id="@+id/action_settings"
+            android:orderInCategory="100"
+            app:showAsAction="always"
+            android:icon="@drawable/ic_action_timel"
+            android:title="time">
 
+        <menu>
 
+                <item
+                    android:id="@+id/week_view"
+                    android:title="@string/week" />
+                <item
+                    android:id="@+id/month_view"
+                    android:title="@string/month" />
+                <item
+                    android:id="@+id/all_view"
+                    android:title="@string/all"/>
+
+        </menu>
+
+        </item>
 
 </menu>
+
+
+
