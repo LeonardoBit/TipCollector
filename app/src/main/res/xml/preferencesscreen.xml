@@ -25,6 +25,13 @@
         app:key="clear_all_key"
         android:summary="@string/clear_all_data_message"
         android:icon="@drawable/ic_delete_forever_black_24dp"/>
+    <PreferenceCategory
+        android:title="Notification"/>
+    <Preference
+        android:title="Set up notification time "
+        app:key="notification"
+        android:summary="U will get notification at 20:00"
+        android:icon="@drawable/ic_notifications_black_24dp"/>
 
 
 </PreferenceScreen>
