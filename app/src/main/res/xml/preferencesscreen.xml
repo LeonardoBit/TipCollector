@@ -29,7 +29,7 @@
         android:title="Notification"/>
     <Preference
         android:title="Set up notification time "
-        app:key="notification"
+        app:key="notifications"
         android:summary="U will get notification at 20:00"
         android:icon="@drawable/ic_notifications_black_24dp"/>
 

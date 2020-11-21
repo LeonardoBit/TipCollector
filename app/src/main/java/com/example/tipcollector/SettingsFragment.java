@@ -1,15 +1,19 @@
 package com.example.tipcollector;
 
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.InputType;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -26,6 +30,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
 
     public static final String PREF_HOURLY_RATE = "hourly_rate_key";
     public static final String PREF_CURRENCY = "currencies";
+    public static final String PREF_NOTIFICATION = "notifications";
 
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
@@ -68,6 +73,22 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferencesscreen);
+
+        findPreference(PREF_NOTIFICATION);
+
+        Preference notification = (Preference) findPreference(PREF_NOTIFICATION);
+
+        notification.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getActivity(), NotificationActivity.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
+
+
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -114,4 +135,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                 unregisterOnSharedPreferenceChangeListener(preferenceChangeListener);
 
     }
+
+
 }
