@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:key="notifications"
+    >
+
+    <Preferenc
+        android:icon="@drawable/ic_access_time_black_24dp"
+        android:title="set time"
+        app:summary="you set 20:00" />
+
+</PreferenceScreen>

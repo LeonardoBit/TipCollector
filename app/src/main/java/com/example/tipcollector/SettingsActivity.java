@@ -3,10 +3,14 @@ package com.example.tipcollector;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import android.os.Bundle;
 
-public class SettingsActivity extends AppCompatActivity {
+import com.example.tipcollector.Notification.NotificationMenuFragment;
+
+public class SettingsActivity extends AppCompatActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
 
     private Toolbar toolbar;
@@ -22,7 +26,9 @@ public class SettingsActivity extends AppCompatActivity {
         if(findViewById(R.id.settings_container)!=null){
             if(savedInstanceState!=null)
                 return;
-             getSupportFragmentManager().beginTransaction().replace(R.id.settings_container, new SettingsFragment()).commit();
+             getSupportFragmentManager()
+                     .beginTransaction()
+                     .replace(R.id.settings_container, new SettingsFragment()).commit();
         }
 
 
@@ -30,4 +36,20 @@ public class SettingsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+    @Override
+    public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
+        final Bundle args = pref.getExtras();
+        final Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(
+                getClassLoader(),
+                pref.getFragment());
+        fragment.setArguments(args);
+        fragment.setTargetFragment(caller,0);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.settings_container, fragment)
+                .addToBackStack(null)
+                .commit();
+        return true;
+    }
+
 }

@@ -5,33 +5,30 @@
     <PreferenceCategory
         android:title="@string/setting_general"
         />
-    <ListPreference
-        android:entryValues="@array/currencies"
-        android:entries="@array/currencies"
-        app:title="@string/select_currency"
-        app:key="currencies"
-        android:icon="@drawable/ic_money_black"
-        android:defaultValue="PLN"/>
-    <EditTextPreference
-        android:summary="@string/settings_general_hourly_rate"
-        android:title="@string/your_hourly_rate"
-        app:key="hourly_rate_key"
-        android:icon="@drawable/ic_business_center_black_24dp"
-        />
+        <ListPreference
+            android:entryValues="@array/currencies"
+            android:entries="@array/currencies"
+            app:title="@string/select_currency"
+            app:key="currencies"
+            android:icon="@drawable/ic_money_black"
+            android:defaultValue="PLN"/>
+        <EditTextPreference
+            android:summary="@string/settings_general_hourly_rate"
+            android:title="@string/your_hourly_rate"
+            app:key="hourly_rate_key"
+            android:icon="@drawable/ic_business_center_black_24dp"
+            />
+    <Preference
+        android:title="Notification"
+        app:key="notification"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        app:fragment="com.example.tipcollector.Notification.NotificationMenuFragment" />
     <PreferenceCategory
         android:title="@string/data_settings"/>
-    <Preference
-        android:title="@string/clear_all_database"
-        app:key="clear_all_key"
-        android:summary="@string/clear_all_data_message"
-        android:icon="@drawable/ic_delete_forever_black_24dp"/>
-    <PreferenceCategory
-        android:title="Notification"/>
-    <Preference
-        android:title="Set up notification time "
-        app:key="notifications"
-        android:summary="U will get notification at 20:00"
-        android:icon="@drawable/ic_notifications_black_24dp"/>
-
+        <Preference
+            android:title="@string/clear_all_database"
+            app:key="clear_all_key"
+            android:summary="@string/clear_all_data_message"
+            android:icon="@drawable/ic_delete_forever_black_24dp"/>
 
 </PreferenceScreen>
