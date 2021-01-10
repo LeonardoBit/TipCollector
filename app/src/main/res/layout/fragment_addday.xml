@@ -24,7 +24,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="154dp"
         android:layout_marginTop="25dp"
-        android:background="@color/design_default_color_on_primary"
+        android:background="@drawable/background_shape"
         android:gravity="center"
         android:hint="@string/choose_date" />
 
@@ -84,6 +84,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="291dp"
-        android:text="@string/ok" />
+        android:text="@string/ok"
+        android:background="@drawable/background_shape"/>
 
 </RelativeLayout>

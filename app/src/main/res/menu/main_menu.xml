@@ -11,11 +11,11 @@
             android:title="@string/main_page" />
         <item
             android:id="@+id/nav_timeline"
-            android:icon="@drawable/ic_home_page"
+            android:icon="@drawable/ic_timeline1"
             android:title="@string/timeline" />
         <item
             android:id="@+id/nav_analysis"
-            android:icon="@drawable/ic_home_page"
+            android:icon="@drawable/ic_analysis"
             android:title="@string/analysis" />
     </group>
 

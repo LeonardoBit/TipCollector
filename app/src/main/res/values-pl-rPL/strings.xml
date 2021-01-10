@@ -28,7 +28,6 @@
     <string name="your_hourly_rate">twoja stawka godzinowa</string>
     <string name="settings_general_hourly_rate">Prosze wybrać stawkę godzinową</string>
     <string name="select_language">Wybierz język</string>
-    <string name="settings_interface_language" translatable="false">Język</string>
     <string name="clear_all_database">Usuń wszystkie dane</string>
     <string name="clear_all_data_message">to usunie wszystkie dane</string>
     <string name="setting_general">Główne</string>
@@ -40,5 +39,8 @@
     <string name="week">Tydzień</string>
     <string name="month">Miesiąc</string>
     <string name="all">Wszystko</string>
+    <string name="notification">Przypomnienia</string>
+    <string name="total_this_month">W tym miesiącu</string>
+    <string name="average_in_chosen_month">"Srednia  w miesiącach "</string>
 
 </resources>

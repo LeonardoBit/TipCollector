@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/gradient_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
 
     <TextView
@@ -13,7 +14,7 @@
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:background="@android:color/transparent"
+        android:background="@drawable/background_allrecors_shape"
         android:gravity="center"
         android:text="@string/curView"
         android:textSize="20sp" />
@@ -65,28 +66,48 @@
 
     <ListView
         android:id="@+id/daysList"
-        android:layout_width="414dp"
-        android:layout_height="457dp"
-        android:layout_above="@+id/total"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/curView"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="0dp">
+        android:layout_centerVertical="true"
+        android:layout_marginTop="98dp" />
 
-    </ListView>
-
-    <TextView
-        android:id="@+id/total"
-        android:layout_width="411dp"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_alignParentStart="true"
+        android:background="@drawable/background_shape"
+        android:id="@+id/totalLayout"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginBottom="0dp"
-        android:gravity="center|start"
-        android:text="@string/total"
-        android:textSize="50sp"
-        android:textStyle="bold" />
+        android:elevation="10dp"
+        android:padding="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="20dp"
+
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/totalTime"
+            android:text="@string/total_this_month"
+            android:gravity="center"
+            >
+        </TextView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="number"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="36sp"
+            android:id="@+id/total">
+        </TextView>
+    </LinearLayout>
+
+
 
 </RelativeLayout>

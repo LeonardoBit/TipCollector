@@ -30,6 +30,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
+
         Preference clearAllData = findPreference("clear_all_key");
         clearAllData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

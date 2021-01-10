@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:key="notifications"
     >
 
-    <Preferenc
-        android:icon="@drawable/ic_access_time_black_24dp"
-        android:title="set time"
-        app:summary="you set 20:00" />
+
+        <SwitchPreference
+            android:title="On/Off "
+            android:summary="notification on "/>
+        <Preference
+            android:icon="@drawable/ic_access_time_black_24dp"
+            android:title="Notification frequency "
+            app:summary="" />
+        <com.example.tipcollector.Notification.TimePickerDialog
+            android:defaultValue="true"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:key="some_time"
+            android:title="Set some time"
+            android:summary="riminder at time "/>
+
+
 
 </PreferenceScreen>

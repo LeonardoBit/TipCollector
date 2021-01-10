@@ -12,9 +12,11 @@ import androidx.preference.PreferenceManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import PageMain.MainPageFragment;
+
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -35,8 +37,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         toolbar = findViewById(R.id.mainToolbar);
+
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
 
 
@@ -51,7 +54,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle = new ActionBarDrawerToggle(this,drawer,toolbar,
                 R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.toggleBlueColor));
         toggle.syncState();
+
+
 
         if(savedInstanceState==null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -80,17 +86,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case  R.id.nav_mainPage:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MainPageFragment()).addToBackStack(null).commit();
-                setTitle(item.getTitle());
+
                 break;
             case  R.id.nav_timeline:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new TimelineFragment()).addToBackStack(null).commit();
-                setTitle(item.getTitle());
+
                 break;
             case  R.id.nav_analysis:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new AnalysisFragment()).addToBackStack(null).commit();
-                setTitle(item.getTitle());
+
                 break;
 
             case R.id.nav_share:

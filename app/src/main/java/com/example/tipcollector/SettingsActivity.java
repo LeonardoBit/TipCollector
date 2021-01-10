@@ -8,8 +8,6 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import android.os.Bundle;
 
-import com.example.tipcollector.Notification.NotificationMenuFragment;
-
 public class SettingsActivity extends AppCompatActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
 

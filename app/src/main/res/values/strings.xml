@@ -35,7 +35,7 @@
     <string name="settings_general_hourly_rate">Please choose your hourly rate</string>
     <string name="select_language">Select language</string>
     <string name="language_default_value" translatable="false">English</string>
-    <string name="settings_interface_language">Language</string>
+    <string name="settings_interface_language" translatable="false">Language</string>
     <string name="clear_all_database">Clear ALL data</string>
     <string name="clear_all_data_message">"This will clear your data "</string>
     <string name="setting_general">GENERAL</string>
@@ -43,12 +43,15 @@
     <string name="data_settings">Data settings</string>
     <string name="monday">Monday</string>
     <string name="hours_value">Hours value</string>
-    <string name="add_day">Add Day</string>
+    <string name="add_day">ADD DAY</string>
     <string name="all_records">All records</string>
     <string name="week">Week</string>
     <string name="month">Month</string>
     <string name="all">All records</string>
-    <string name="curView">curView</string>
+    <string name="curView" translatable="false">curView</string>
+    <string name="notification" >Notifications</string>
+    <string name="total_this_month">Total this month:</string>
+    <string name="average_in_chosen_month">Average in chosen month</string>
 
 
     <string-array name="languages">
